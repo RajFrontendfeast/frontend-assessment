@@ -72,7 +72,7 @@ export const MolecularLabSection: React.FC<MolecularLabSectionProps> = ({ onOpen
     <section
       id="workbench"
       ref={sectionRef}
-      className="relative py-28 sm:py-36 overflow-hidden border-t transition-colors duration-500"
+      className="relative py-12 sm:py-24 lg:py-32 overflow-hidden border-t transition-colors duration-500"
       style={{
         backgroundColor: isDark ? '#080C16' : '#F7F8F4',
         borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
@@ -85,7 +85,7 @@ export const MolecularLabSection: React.FC<MolecularLabSectionProps> = ({ onOpen
         </motion.div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header: Slides from TOP */}
         <motion.div
@@ -93,7 +93,7 @@ export const MolecularLabSection: React.FC<MolecularLabSectionProps> = ({ onOpen
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-left max-w-3xl mb-14"
+          className="text-left max-w-3xl mb-8 sm:mb-14"
         >
           <div
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold tracking-wider mb-3 shadow-sm"
@@ -112,7 +112,7 @@ export const MolecularLabSection: React.FC<MolecularLabSectionProps> = ({ onOpen
           >
             Design & Screen Virtual Therapeutics
           </h2>
-          <p className="mt-3 text-base sm:text-lg opacity-75 font-sans" style={{ color: currentTemplate.palette.mutedText }}>
+          <p className="mt-3 text-sm sm:text-base lg:text-lg opacity-75 font-sans" style={{ color: currentTemplate.palette.mutedText }}>
             Configure atomic target parameters, select therapeutic modalities, and execute biophysical simulations against high-resolution cryo-EM coordinates in real time.
           </p>
         </motion.div>

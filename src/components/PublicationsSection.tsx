@@ -35,7 +35,7 @@ export const PublicationsSection: React.FC = () => {
     <section
       id="publications"
       ref={sectionRef}
-      className="relative py-28 sm:py-36 overflow-hidden border-t transition-colors duration-500"
+      className="relative py-12 sm:py-24 lg:py-32 overflow-hidden border-t transition-colors duration-500"
       style={{
         backgroundColor: isDark ? '#080C16' : '#F7F8F4',
         borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
@@ -48,10 +48,10 @@ export const PublicationsSection: React.FC = () => {
         </motion.div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header: Slides from TOP & Category Filters: Slide from RIGHT */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-16">
           <motion.div
             initial={{ opacity: 0, y: -45 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -86,7 +86,7 @@ export const PublicationsSection: React.FC = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-50px' }}
             transition={{ duration: 0.75, delay: 0.15 }}
-            className="flex items-center gap-2 overflow-x-auto pb-2"
+            className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar max-w-full"
           >
             {categories.map((cat) => (
               <button
@@ -95,7 +95,7 @@ export const PublicationsSection: React.FC = () => {
                   bioSound.playClick(600);
                   setSelectedCategory(cat);
                 }}
-                className={`px-4 py-2 rounded-full text-xs font-mono font-semibold transition-all ${
+                className={`px-3.5 sm:px-4 py-2 rounded-full text-xs font-mono font-semibold whitespace-nowrap shrink-0 transition-all ${
                   selectedCategory === cat
                     ? 'shadow-sm font-bold scale-105'
                     : 'opacity-70 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/5'
@@ -175,7 +175,7 @@ export const PublicationsSection: React.FC = () => {
                       <span className="text-xs font-mono opacity-60">{pub.year}</span>
                     </div>
                     <span
-                      className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border"
+                      className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-xl border"
                       style={{
                         backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
                         borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)',

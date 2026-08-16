@@ -70,7 +70,7 @@ export const PipelineSection: React.FC<PipelineSectionProps> = ({ onSelectAsset 
     <section
       id="pipeline"
       ref={sectionRef}
-      className="relative py-28 sm:py-36 overflow-hidden border-t transition-colors duration-500"
+      className="relative py-12 sm:py-24 lg:py-32 overflow-hidden border-t transition-colors duration-500"
       style={{
         backgroundColor: isDark ? '#080C16' : '#F7F8F4',
         borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
@@ -83,10 +83,10 @@ export const PipelineSection: React.FC<PipelineSectionProps> = ({ onSelectAsset 
         </motion.div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header: Slides from TOP & Search from RIGHT */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
           <motion.div
             initial={{ opacity: 0, y: -40 }}
             whileInView={{ opacity: 1, y: 0 }}

@@ -340,7 +340,7 @@ export const HorizontalJourneySection: React.FC = () => {
   return (
     <section
       id="journey"
-      className="relative py-24 sm:py-32 overflow-hidden border-t transition-colors duration-500"
+      className="relative py-12 sm:py-24 lg:py-32 overflow-hidden border-t transition-colors duration-500"
       style={{
         backgroundColor: isDark ? '#080C16' : '#FAFAFC',
         borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
@@ -356,7 +356,7 @@ export const HorizontalJourneySection: React.FC = () => {
         style={{ backgroundColor: currentTemplate.palette.accent }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <motion.div
@@ -364,7 +364,7 @@ export const HorizontalJourneySection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-40px' }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center max-w-3xl mx-auto mb-10 sm:mb-12"
+          className="text-center max-w-3xl mx-auto mb-8 sm:mb-12"
         >
           <div
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold tracking-wider mb-3 shadow-sm mx-auto"
@@ -394,7 +394,7 @@ export const HorizontalJourneySection: React.FC = () => {
           </h2>
 
           <p
-            className="mt-3 text-base sm:text-lg opacity-75 font-sans leading-relaxed"
+            className="mt-3 text-sm sm:text-base lg:text-lg opacity-75 font-sans leading-relaxed"
             style={{ color: currentTemplate.palette.mutedText }}
           >
             Select any phase below to inspect the computational synthesis blueprints, robotic wet-lab fabrication nodes, and clinical translational milestones.
@@ -402,7 +402,7 @@ export const HorizontalJourneySection: React.FC = () => {
 
           {/* Velocity Bar */}
           <div
-            className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 mt-5 pt-4 border-t font-mono text-xs opacity-80"
+            className="flex flex-wrap items-center justify-center gap-3 sm:gap-8 mt-5 pt-4 border-t font-mono text-xs opacity-80"
             style={{ borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)' }}
           >
             <div className="flex items-center gap-2">
@@ -420,8 +420,8 @@ export const HorizontalJourneySection: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Category Filters */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+        {/* Category Filters - Nowrap and horizontally scrollable on mobile */}
+        <div className="flex items-center sm:justify-center gap-2 mb-6 overflow-x-auto pb-2 no-scrollbar max-w-full">
           {[
             { id: 'all' as CategoryFilter, label: 'All 6 Phases' },
             { id: 'in-silico' as CategoryFilter, label: '01-02 In Silico Physics' },
@@ -433,7 +433,7 @@ export const HorizontalJourneySection: React.FC = () => {
               <button
                 key={cat.id}
                 onClick={() => handleFilterChange(cat.id)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-mono transition-all duration-200 ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-mono whitespace-nowrap shrink-0 transition-all duration-200 ${
                   isCatActive
                     ? 'font-bold shadow-md scale-105'
                     : 'opacity-65 hover:opacity-100'
@@ -457,13 +457,13 @@ export const HorizontalJourneySection: React.FC = () => {
 
         {/* Portfolio Stage Tabs Navigation Ribbon */}
         <div
-          className="p-1.5 sm:p-2 rounded-2xl sm:rounded-3xl border backdrop-blur-xl mb-8 shadow-sm overflow-x-auto no-scrollbar"
+          className="p-1.5 sm:p-2 rounded-2xl sm:rounded-3xl border backdrop-blur-xl mb-6 sm:mb-8 shadow-sm overflow-x-auto no-scrollbar"
           style={{
             backgroundColor: isDark ? 'rgba(13, 19, 33, 0.85)' : 'rgba(255, 255, 255, 0.95)',
             borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)',
           }}
         >
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-1.5 sm:gap-2 min-w-[620px] lg:min-w-0">
+          <div className="flex sm:grid sm:grid-cols-3 lg:grid-cols-6 gap-1.5 sm:gap-2 min-w-max sm:min-w-0">
             {JOURNEY_STAGES.map((stage, idx) => {
               const isSelected = selectedStageIndex === idx;
               const StageIcon = stage.icon;
@@ -474,7 +474,7 @@ export const HorizontalJourneySection: React.FC = () => {
                   key={stage.id}
                   id={`journey-tab-${stage.id}`}
                   onClick={() => handleSelectStage(idx)}
-                  className={`relative p-3 rounded-xl sm:rounded-2xl text-left transition-all duration-300 flex flex-col justify-between group ${
+                  className={`relative p-2.5 sm:p-3 rounded-xl sm:rounded-2xl text-left transition-all duration-300 flex flex-col justify-between group min-w-[140px] sm:min-w-0 shrink-0 ${
                     isSelected
                       ? 'shadow-lg'
                       : isFilteredOut
@@ -504,7 +504,7 @@ export const HorizontalJourneySection: React.FC = () => {
 
                   <div className="flex items-center justify-between gap-1.5 mb-2 relative z-10">
                     <div
-                      className="w-7 h-7 rounded-lg flex items-center justify-center font-mono text-xs font-bold shrink-0 transition-transform group-hover:scale-105"
+                      className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center font-mono text-xs font-bold shrink-0 transition-transform group-hover:scale-105"
                       style={{
                         backgroundColor: isSelected
                           ? currentTemplate.palette.primary
@@ -556,7 +556,7 @@ export const HorizontalJourneySection: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full rounded-3xl border backdrop-blur-2xl p-6 sm:p-8 lg:p-10 shadow-xl relative overflow-hidden"
+            className="w-full rounded-3xl border backdrop-blur-2xl p-4 sm:p-8 lg:p-10 shadow-xl relative overflow-hidden"
             style={{
               backgroundColor: isDark ? 'rgba(12, 18, 32, 0.85)' : 'rgba(255, 255, 255, 0.98)',
               borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)',
@@ -570,13 +570,13 @@ export const HorizontalJourneySection: React.FC = () => {
               {activeStage.step}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-start relative z-10">
               
               {/* Left Column: Stage Specifications, Overview & Telemetry (7 Cols on desktop) */}
               <div className="lg:col-span-7 space-y-6">
                 
                 {/* Meta Top Tag Strip */}
-                <div className="flex flex-wrap items-center gap-2.5">
+                <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
                   <div
                     className="p-2 rounded-xl border flex items-center justify-center"
                     style={{
@@ -661,12 +661,12 @@ export const HorizontalJourneySection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Live Telemetry Matrix */}
-                <div className="grid grid-cols-3 gap-3 pt-2">
+                {/* Live Telemetry Matrix - 1 col on mobile, 3 cols on sm+ */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-2">
                   {activeStage.telemetry.map((tel, tIdx) => (
                     <div
                       key={tIdx}
-                      className="p-3.5 rounded-2xl border transition-all hover:scale-[1.02]"
+                      className="p-3 sm:p-3.5 rounded-2xl border transition-all hover:scale-[1.02]"
                       style={{
                         backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
                         borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',

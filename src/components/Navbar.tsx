@@ -74,27 +74,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled
           ? isDark
-            ? 'bg-[#070B13]/90 backdrop-blur-xl border-b border-slate-800 py-3 shadow-md'
-            : 'bg-white/90 backdrop-blur-xl border-b border-slate-200/90 py-3 shadow-sm'
-          : 'bg-transparent py-5'
+            ? 'bg-[#070B13]/90 backdrop-blur-xl border-b border-slate-800 py-2.5 shadow-md'
+            : 'bg-white/90 backdrop-blur-xl border-b border-slate-200/90 py-2.5 shadow-sm'
+          : 'bg-transparent py-3 sm:py-5'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 flex items-center justify-between gap-1 sm:gap-4">
         {/* Brand Logo */}
         <a
           href="#hero"
           onClick={() => bioSound.playClick(500)}
-          className="flex items-center gap-3 group select-none"
+          className="flex items-center gap-1.5 sm:gap-3 group select-none min-w-0 shrink"
         >
           <div
-            className="relative w-10 h-10 rounded-xl border flex items-center justify-center overflow-hidden shadow-sm transition-colors"
+            className="relative w-7 h-7 sm:w-10 sm:h-10 rounded-xl border flex items-center justify-center overflow-hidden shadow-sm transition-colors shrink-0"
             style={{
               backgroundColor: isDark ? 'rgba(16, 185, 129, 0.12)' : 'rgba(16, 185, 129, 0.08)',
               borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)',
             }}
           >
             <Dna
-              className="w-5 h-5 group-hover:rotate-45 transition-transform duration-500"
+              className="w-3.5 h-3.5 sm:w-5 sm:h-5 group-hover:rotate-45 transition-transform duration-500"
               style={{ color: currentTemplate.palette.primary }}
             />
             <div
@@ -102,16 +102,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
               style={{ backgroundColor: `${currentTemplate.palette.primary}20` }}
             />
           </div>
-          <div>
-            <div className="flex items-center gap-1.5">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1 sm:gap-1.5">
               <span
-                className="font-display font-bold text-lg sm:text-xl tracking-tight"
+                className="font-display font-bold text-xs sm:text-xl tracking-tight truncate"
                 style={{ color: currentTemplate.palette.textColor }}
               >
                 SYNTHETIX
               </span>
               <span
-                className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border"
+                className="text-[8px] sm:text-[10px] font-mono font-bold px-1 sm:px-1.5 py-0.5 rounded border shrink-0"
                 style={{
                   backgroundColor: `${currentTemplate.palette.primary}18`,
                   color: currentTemplate.palette.primary,
@@ -121,7 +121,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
                 BIO
               </span>
             </div>
-            <span className="text-[10px] font-mono tracking-wider hidden sm:block opacity-60">
+            <span className="text-[9px] sm:text-[10px] font-mono tracking-wider hidden sm:block opacity-60">
               PROGRAMMABLE THERAPEUTICS
             </span>
           </div>
@@ -163,7 +163,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
         </nav>
 
         {/* Right Action Cluster */}
-        <div className="flex items-center gap-2.5 sm:gap-3">
+        <div className="flex items-center gap-1 sm:gap-3 shrink-0">
           {/* Template Switcher Dropdown in Nav */}
           <div className="relative">
             <button
@@ -173,7 +173,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
                 setTemplateMenuOpen(!templateMenuOpen);
               }}
               title="Change UI Design Template"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-mono font-bold transition-all shadow-sm"
+              className="flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-3 py-1.5 rounded-xl border text-xs font-mono font-bold transition-all shadow-sm"
               style={{
                 backgroundColor: isDark ? '#0D1424' : '#FFFFFF',
                 borderColor: `${currentTemplate.palette.primary}40`,
@@ -182,7 +182,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
             >
               <Palette className="w-3.5 h-3.5" style={{ color: currentTemplate.palette.primary }} />
               <span className="hidden xl:inline text-[11px]">TEMPLATE:</span>
-              <span className="text-[11px]" style={{ color: currentTemplate.palette.primary }}>
+              <span className="hidden sm:inline text-[11px]" style={{ color: currentTemplate.palette.primary }}>
                 {currentTemplate.name.split(' ')[0]}
               </span>
             </button>
@@ -193,7 +193,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  className="absolute right-0 mt-2 w-72 rounded-2xl p-3 border shadow-2xl z-50 backdrop-blur-2xl"
+                  className="absolute right-0 mt-2 w-64 sm:w-72 rounded-2xl p-3 border shadow-2xl z-50 backdrop-blur-2xl"
                   style={{
                     backgroundColor: isDark ? '#0D1424' : '#FFFFFF',
                     borderColor: isDark ? '#1E293B' : '#E2E8F0',
@@ -225,12 +225,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
                       >
                         <div className="flex items-center gap-2">
                           <span
-                            className="w-3 h-3 rounded-full border shadow-sm"
+                            className="w-3 h-3 rounded-full border shadow-sm shrink-0"
                             style={{ backgroundColor: tpl.palette.primary, borderColor: '#FFFFFF' }}
                           />
-                          <span>{tpl.name}</span>
+                          <span className="truncate">{tpl.name}</span>
                         </div>
-                        <span className="text-[9px] uppercase px-1.5 py-0.5 rounded opacity-60">
+                        <span className="text-[9px] uppercase px-1.5 py-0.5 rounded opacity-60 shrink-0">
                           {tpl.mode}
                         </span>
                       </button>
@@ -246,14 +246,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
             id="btn-toggle-sound"
             onClick={handleToggleAudio}
             title={isAudioMuted ? 'Enable Scientific Audio Feedback' : 'Mute Audio'}
-            className="p-2 rounded-xl border transition-all text-xs flex items-center justify-center shadow-sm"
+            className="p-1.5 sm:p-2 rounded-xl border transition-all text-xs flex items-center justify-center shadow-sm shrink-0"
             style={{
               backgroundColor: isDark ? '#0D1424' : '#FFFFFF',
               borderColor: !isAudioMuted ? currentTemplate.palette.primary : isDark ? '#1E293B' : '#E2E8F0',
               color: !isAudioMuted ? currentTemplate.palette.primary : currentTemplate.palette.mutedText,
             }}
           >
-            {!isAudioMuted ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+            {!isAudioMuted ? <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
           </button>
 
           {/* Partner CTA */}
@@ -280,14 +280,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
               bioSound.playClick(500);
               setMobileMenuOpen(!mobileMenuOpen);
             }}
-            className="md:hidden p-2 rounded-xl border shadow-sm"
+            className="md:hidden p-1.5 sm:p-2 rounded-xl border shadow-sm shrink-0"
             style={{
               backgroundColor: isDark ? '#0D1424' : '#FFFFFF',
               borderColor: isDark ? '#1E293B' : '#E2E8F0',
               color: currentTemplate.palette.textColor,
             }}
           >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? <X className="w-4 h-4 sm:w-5 sm:h-5" /> : <Menu className="w-4 h-4 sm:w-5 sm:h-5" />}
           </button>
         </div>
       </div>

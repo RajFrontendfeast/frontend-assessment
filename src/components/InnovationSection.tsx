@@ -126,7 +126,7 @@ export const InnovationSection: React.FC = () => {
     <section
       id="innovation"
       ref={sectionRef}
-      className="relative py-28 sm:py-36 overflow-hidden border-t transition-colors duration-500"
+      className="relative py-12 sm:py-24 lg:py-32 overflow-hidden border-t transition-colors duration-500"
       style={{
         backgroundColor: isDark ? '#0A0E18' : '#FFFFFF',
         borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
@@ -140,7 +140,7 @@ export const InnovationSection: React.FC = () => {
         <div className="w-full h-full rounded-full" style={{ backgroundColor: currentTemplate.palette.primary }} />
       </motion.div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header: Slides from TOP */}
         <motion.div
@@ -148,10 +148,10 @@ export const InnovationSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-left max-w-3xl mb-16"
+          className="text-left max-w-3xl mb-8 sm:mb-14"
         >
           <div
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold tracking-wider mb-4 shadow-sm"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold tracking-wider mb-3 shadow-sm"
             style={{
               backgroundColor: `${currentTemplate.palette.primary}12`,
               borderColor: `${currentTemplate.palette.primary}30`,
@@ -174,25 +174,59 @@ export const InnovationSection: React.FC = () => {
             </span>
           </h2>
           
-          <p className="mt-4 text-base sm:text-lg leading-relaxed font-sans opacity-80" style={{ color: currentTemplate.palette.mutedText }}>
+          <p className="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg leading-relaxed font-sans opacity-80" style={{ color: currentTemplate.palette.mutedText }}>
             By merging quantum-accurate generative biophysics with automated closed-loop synthesis, we systematically eliminate the high attrition rate of legacy pharmacology.
           </p>
         </motion.div>
 
-        {/* Fluid Architectural Split Layout (No card boxes!) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+        {/* Mobile Horizontal Tab Selector Ribbon (Visible only on mobile/tablet < lg) */}
+        <div className="lg:hidden flex items-center gap-2 overflow-x-auto pb-2 mb-6 no-scrollbar max-w-full">
+          {pillars.map((pillar, idx) => {
+            const Icon = pillar.icon;
+            const isActive = activeTab === idx;
+            return (
+              <button
+                key={pillar.id}
+                onClick={() => {
+                  bioSound.playClick(500 + idx * 60);
+                  setActiveTab(idx);
+                }}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-mono whitespace-nowrap shrink-0 border transition-all ${
+                  isActive
+                    ? 'font-bold shadow-md scale-105'
+                    : 'opacity-70 hover:opacity-100'
+                }`}
+                style={{
+                  backgroundColor: isActive
+                    ? `${currentTemplate.palette.primary}20`
+                    : isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
+                  borderColor: isActive
+                    ? currentTemplate.palette.primary
+                    : isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
+                  color: isActive ? currentTemplate.palette.primary : currentTemplate.palette.textColor,
+                }}
+              >
+                <Icon className="w-4 h-4 shrink-0" />
+                <span>0{idx + 1}. {pillar.title}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Fluid Architectural Split Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
           
-          {/* Left Vertical Architectural Spine: Slides from LEFT */}
+          {/* Left Vertical Architectural Spine (Hidden on mobile, visible on lg+) */}
           <motion.div
             initial={{ opacity: 0, x: -80 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 relative"
+            className="hidden lg:block lg:col-span-5 relative"
           >
             {/* Center connecting laser rail */}
             <div
-              className="absolute left-6 top-8 bottom-8 w-0.5 hidden sm:block opacity-20"
+              className="absolute left-6 top-8 bottom-8 w-0.5 opacity-20"
               style={{ backgroundColor: currentTemplate.palette.primary }}
             />
 
@@ -266,7 +300,7 @@ export const InnovationSection: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Right Holographic Console Terminal: Slides from RIGHT */}
+          {/* Right Holographic Console Terminal */}
           <motion.div
             initial={{ opacity: 0, x: 90 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -281,7 +315,7 @@ export const InnovationSection: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -25 }}
                 transition={{ duration: 0.45 }}
-                className="p-6 sm:p-10 rounded-3xl border backdrop-blur-xl space-y-8 relative overflow-hidden shadow-2xl"
+                className="p-5 sm:p-8 lg:p-10 rounded-3xl border backdrop-blur-xl space-y-6 sm:space-y-8 relative overflow-hidden shadow-2xl"
                 style={{
                   backgroundColor: isDark ? 'rgba(11, 15, 26, 0.85)' : 'rgba(255, 255, 255, 0.95)',
                   borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.08)',
@@ -293,7 +327,7 @@ export const InnovationSection: React.FC = () => {
 
                 {/* Main Overview */}
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span
                       className="px-3 py-1 rounded-full text-xs font-mono font-bold border"
                       style={{
@@ -324,7 +358,7 @@ export const InnovationSection: React.FC = () => {
 
                 {/* Biophysical Key Metrics Strip: Unbroken Bar */}
                 <div
-                  className="grid grid-cols-3 gap-3 p-4 rounded-2xl border"
+                  className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3.5 sm:p-4 rounded-2xl border"
                   style={{
                     backgroundColor: isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.02)',
                     borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
@@ -334,7 +368,7 @@ export const InnovationSection: React.FC = () => {
                     <div key={idx} className="text-left">
                       <div className="text-[10px] font-mono opacity-60 uppercase truncate">{s.label}</div>
                       <div
-                        className="text-lg sm:text-xl font-mono font-bold mt-0.5"
+                        className="text-base sm:text-xl font-mono font-bold mt-0.5"
                         style={{ color: idx === 1 ? currentTemplate.palette.accent : currentTemplate.palette.primary }}
                       >
                         {s.val}
@@ -363,9 +397,9 @@ export const InnovationSection: React.FC = () => {
                   ))}
                 </div>
 
-                {/* Real-time Code Output Terminal: Slides up from BOTTOM */}
+                {/* Real-time Code Output Terminal */}
                 <div
-                  className="p-4 rounded-2xl font-mono text-xs overflow-x-auto border"
+                  className="p-4 rounded-2xl font-mono text-xs overflow-x-auto border no-scrollbar"
                   style={{
                     backgroundColor: isDark ? '#05070D' : '#0F172A',
                     borderColor: isDark ? '#1E293B' : '#334155',
@@ -379,7 +413,7 @@ export const InnovationSection: React.FC = () => {
                     </span>
                     <span className="text-[10px] text-emerald-500 font-bold animate-pulse">LIVE COMPUTATION</span>
                   </div>
-                  <pre className="text-[11px] text-slate-300 leading-relaxed font-mono">
+                  <pre className="text-[11px] text-slate-300 leading-relaxed font-mono whitespace-pre">
                     {currentPillar.codeSnippet}
                   </pre>
                 </div>

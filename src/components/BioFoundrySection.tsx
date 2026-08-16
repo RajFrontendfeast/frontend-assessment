@@ -30,7 +30,7 @@ export const BioFoundrySection: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative py-28 sm:py-36 overflow-hidden border-t transition-colors duration-500"
+      className="relative py-12 sm:py-24 lg:py-32 overflow-hidden border-t transition-colors duration-500"
       style={{
         backgroundColor: isDark ? '#0A0E18' : '#FFFFFF',
         borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
@@ -44,7 +44,7 @@ export const BioFoundrySection: React.FC = () => {
         <div className="w-full h-full rounded-full" style={{ backgroundColor: currentTemplate.palette.accent }} />
       </motion.div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header: Slides from TOP */}
         <motion.div
@@ -52,7 +52,7 @@ export const BioFoundrySection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-left max-w-3xl mb-16"
+          className="text-left max-w-3xl mb-8 sm:mb-16"
         >
           <div
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold tracking-wider mb-3 shadow-sm"
@@ -71,21 +71,54 @@ export const BioFoundrySection: React.FC = () => {
           >
             Robotic Bio-Foundry Infrastructure
           </h2>
-          <p className="mt-3 text-base sm:text-lg opacity-75 font-sans" style={{ color: currentTemplate.palette.mutedText }}>
+          <p className="mt-3 text-sm sm:text-base lg:text-lg opacity-75 font-sans" style={{ color: currentTemplate.palette.mutedText }}>
             Our closed-loop facilities synthesize, test, and sequence thousands of therapeutic candidates 24/7 with sub-nanoliter acoustic dispensing and real-time SPR kinetic feedback.
           </p>
         </motion.div>
 
+        {/* Mobile Horizontal Facility Selector Ribbon (Visible only on mobile/tablet < lg) */}
+        <div className="lg:hidden flex items-center gap-2 overflow-x-auto pb-2 mb-6 no-scrollbar max-w-full">
+          {LAB_LOCATIONS.map((loc, idx) => {
+            const isActive = activeLocIdx === idx;
+            return (
+              <button
+                key={loc.city}
+                onClick={() => {
+                  bioSound.playClick(500 + idx * 50);
+                  setActiveLocIdx(idx);
+                }}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-mono whitespace-nowrap shrink-0 border transition-all ${
+                  isActive
+                    ? 'font-bold shadow-md scale-105'
+                    : 'opacity-70 hover:opacity-100'
+                }`}
+                style={{
+                  backgroundColor: isActive
+                    ? `${currentTemplate.palette.primary}20`
+                    : isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
+                  borderColor: isActive
+                    ? currentTemplate.palette.primary
+                    : isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
+                  color: isActive ? currentTemplate.palette.primary : currentTemplate.palette.textColor,
+                }}
+              >
+                <Building2 className="w-4 h-4 shrink-0" />
+                <span>{loc.city}, {loc.country}</span>
+              </button>
+            );
+          })}
+        </div>
+
         {/* Split Cleanroom Workspace (Left selector, Right Live HUD) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center mb-12 sm:mb-16">
           
-          {/* Left Facility Nodes: Slide from LEFT */}
+          {/* Left Facility Nodes (Hidden on mobile, visible on lg+) */}
           <motion.div
             initial={{ opacity: 0, x: -80 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-50px' }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 space-y-3"
+            className="hidden lg:block lg:col-span-6 space-y-3"
           >
             {LAB_LOCATIONS.map((loc, idx) => {
               const isActive = activeLocIdx === idx;

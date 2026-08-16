@@ -40,7 +40,7 @@ export const CapabilitiesSection: React.FC = () => {
     <section
       id="capabilities"
       ref={sectionRef}
-      className="relative py-28 sm:py-36 overflow-hidden border-t transition-colors duration-500"
+      className="relative py-12 sm:py-24 lg:py-32 overflow-hidden border-t transition-colors duration-500"
       style={{
         backgroundColor: isDark ? '#0A0E18' : '#FFFFFF',
         borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
@@ -56,7 +56,7 @@ export const CapabilitiesSection: React.FC = () => {
         </div>
       </motion.div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header: Slides from TOP */}
         <motion.div
@@ -64,7 +64,7 @@ export const CapabilitiesSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-left max-w-3xl mb-14"
+          className="text-left max-w-3xl mb-8 sm:mb-14"
         >
           <div
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-mono font-bold tracking-wider mb-3 shadow-sm"
@@ -83,18 +83,18 @@ export const CapabilitiesSection: React.FC = () => {
           >
             Integrated Biophysical Technologies
           </h2>
-          <p className="mt-3 text-base sm:text-lg opacity-75 font-sans" style={{ color: currentTemplate.palette.mutedText }}>
+          <p className="mt-3 text-sm sm:text-base lg:text-lg opacity-75 font-sans" style={{ color: currentTemplate.palette.mutedText }}>
             Our four-tier in silico platform resolves high-dimensional molecular folding, epigenetic promoter silencing, and spatial transcriptomics in real time.
           </p>
         </motion.div>
 
-        {/* Tactical Dial Selector Strip: Slides from LEFT */}
+        {/* Tactical Dial Selector Strip: Scrollable on mobile, grid on sm+ */}
         <motion.div
           initial={{ opacity: 0, x: -70 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.75, delay: 0.15 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10"
+          className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 mb-8 sm:mb-10 overflow-x-auto pb-2 sm:pb-0 no-scrollbar max-w-full"
         >
           {PLATFORM_CAPABILITIES.map((cap) => {
             const isSelected = activeCapId === cap.id;
@@ -106,7 +106,7 @@ export const CapabilitiesSection: React.FC = () => {
                   bioSound.playClick(550);
                   setActiveCapId(cap.id);
                 }}
-                className={`p-4 sm:p-5 rounded-2xl text-left border transition-all duration-300 flex flex-col justify-between ${
+                className={`p-3.5 sm:p-5 rounded-2xl text-left border transition-all duration-300 flex flex-col justify-between min-w-[200px] sm:min-w-0 shrink-0 ${
                   isSelected ? 'shadow-lg scale-[1.02]' : 'opacity-70 hover:opacity-100 hover:scale-[1.01]'
                 }`}
                 style={{
@@ -124,7 +124,7 @@ export const CapabilitiesSection: React.FC = () => {
                 >
                   {cap.badge}
                 </span>
-                <h3 className="text-sm sm:text-base font-heading font-bold mt-2 leading-tight" style={{ color: currentTemplate.palette.textColor }}>
+                <h3 className="text-xs sm:text-base font-heading font-bold mt-2 leading-tight" style={{ color: currentTemplate.palette.textColor }}>
                   {cap.title}
                 </h3>
               </button>
@@ -133,7 +133,7 @@ export const CapabilitiesSection: React.FC = () => {
         </motion.div>
 
         {/* Integrated Console Workstation (Left & Right Split) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-stretch">
           
           {/* Left Column: Scientific Specifications: Slides from LEFT */}
           <motion.div
@@ -141,14 +141,14 @@ export const CapabilitiesSection: React.FC = () => {
             initial={{ opacity: 0, x: -70 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 p-6 sm:p-8 rounded-3xl border backdrop-blur-md space-y-6 flex flex-col justify-between shadow-sm"
+            className="lg:col-span-6 p-5 sm:p-8 rounded-3xl border backdrop-blur-md space-y-6 flex flex-col justify-between shadow-sm"
             style={{
               backgroundColor: isDark ? 'rgba(13, 20, 36, 0.7)' : 'rgba(255, 255, 255, 0.9)',
               borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)',
             }}
           >
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span
                   className="px-3 py-1 rounded-full text-xs font-mono font-bold border"
                   style={{
@@ -185,9 +185,9 @@ export const CapabilitiesSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Bottom Metrics Matrix: Slides up from BOTTOM */}
+            {/* Bottom Metrics Matrix: 1 col on mobile, 3 cols on sm+ */}
             <div
-              className="pt-4 border-t grid grid-cols-3 gap-3"
+              className="pt-4 border-t grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3"
               style={{ borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)' }}
             >
               {activeCapability.metrics.map((m, idx) => (
@@ -196,7 +196,7 @@ export const CapabilitiesSection: React.FC = () => {
                   borderColor: isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.05)',
                 }}>
                   <div className="text-[10px] opacity-60 font-mono truncate">{m.label}</div>
-                  <div className="text-lg font-mono font-bold mt-1" style={{ color: currentTemplate.palette.primary }}>
+                  <div className="text-base sm:text-lg font-mono font-bold mt-1" style={{ color: currentTemplate.palette.primary }}>
                     {m.value}
                   </div>
                 </div>
