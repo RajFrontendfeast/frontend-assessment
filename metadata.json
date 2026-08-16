@@ -1,0 +1,6 @@
+{
+  "name": "Synthetix Bio - Next-Gen Therapeutics",
+  "description": "Premium animated biotechnology platform exploring generative protein design, precision gene synthesis, and programmable cellular therapeutics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
