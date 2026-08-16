@@ -253,7 +253,7 @@ export const PipelineSection: React.FC<PipelineSectionProps> = ({ onSelectAsset 
                       {/* Modality Tag */}
                       <div className="lg:col-span-2">
                         <span
-                          className="inline-block px-3 py-1 rounded-full text-xs font-mono border"
+                          className="inline-block px-3 py-1 rounded text-xs font-mono border"
                           style={{
                             backgroundColor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.03)',
                             borderColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
