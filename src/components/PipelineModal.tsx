@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, CheckCircle2, Shield, FileText, ArrowRight, Dna, Activity, ExternalLink, Download } from 'lucide-react';
 import { PipelineAsset } from '../types';
 import { bioSound } from '../utils/sound';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 
 interface PipelineModalProps {
   asset: PipelineAsset | null;
@@ -15,11 +16,16 @@ export const PipelineModal: React.FC<PipelineModalProps> = ({
   onClose,
   onOpenPartnerWithAsset,
 }) => {
+  useBodyScrollLock(!!asset);
+
   if (!asset) return null;
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-slate-900/60 backdrop-blur-md">
+      <div
+        data-lenis-prevent
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto overscroll-contain bg-slate-900/60 backdrop-blur-md"
+      >
         {/* Backdrop Click */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -31,11 +37,12 @@ export const PipelineModal: React.FC<PipelineModalProps> = ({
 
         {/* Modal Container */}
         <motion.div
+          data-lenis-prevent
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white border border-slate-200 shadow-2xl p-6 sm:p-8 z-10 text-slate-900"
+          className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto overscroll-contain rounded-3xl bg-white border border-slate-200 shadow-2xl p-6 sm:p-8 z-10 text-slate-900"
         >
           {/* Header */}
           <div className="flex items-start justify-between gap-4 pb-6 border-b border-slate-200">

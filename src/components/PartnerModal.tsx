@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, Send, CheckCircle2, Sparkles, Building2, User, Mail, MessageSquare, AlertCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { bioSound } from '../utils/sound';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 
 interface PartnerModalProps {
   isOpen: boolean;
@@ -15,6 +16,8 @@ export const PartnerModal: React.FC<PartnerModalProps> = ({
   onClose,
   defaultAssetCode = '',
 }) => {
+  useBodyScrollLock(isOpen);
+
   const [formData, setFormData] = useState({
     fullName: '',
     workEmail: '',
@@ -76,7 +79,10 @@ export const PartnerModal: React.FC<PartnerModalProps> = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto bg-slate-900/60 backdrop-blur-md">
+      <div
+        data-lenis-prevent
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto overscroll-contain bg-slate-900/60 backdrop-blur-md"
+      >
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -86,11 +92,12 @@ export const PartnerModal: React.FC<PartnerModalProps> = ({
         />
 
         <motion.div
+          data-lenis-prevent
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-2xl rounded-3xl bg-white border border-slate-200 shadow-2xl p-6 sm:p-8 z-10 text-slate-900"
+          className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto overscroll-contain rounded-3xl bg-white border border-slate-200 shadow-2xl p-6 sm:p-8 z-10 text-slate-900"
         >
           {/* Close button */}
           <button

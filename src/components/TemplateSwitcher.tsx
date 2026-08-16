@@ -61,7 +61,10 @@ export const TemplateSwitcher: React.FC = () => {
               </div>
 
               {/* Template Options Grid */}
-              <div className="mt-4 space-y-2.5 max-h-[360px] overflow-y-auto pr-1">
+              <div
+                data-lenis-prevent
+                className="mt-4 space-y-2.5 max-h-[360px] overflow-y-auto overscroll-contain pr-1"
+              >
                 {templates.map((tpl) => {
                   const isSelected = tpl.id === currentTemplateId;
                   return (

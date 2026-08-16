@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 
 interface JourneyStage {
   id: string;
@@ -290,6 +291,8 @@ export const HorizontalJourneySection: React.FC = () => {
   const [activeInnerTab, setActiveInnerTab] = useState<'visual' | 'telemetry' | 'protocol'>('visual');
   const [modalStage, setModalStage] = useState<JourneyStage | null>(null);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
+
+  useBodyScrollLock(!!modalStage);
 
   const activeStage = JOURNEY_STAGES[selectedStageIndex];
   const ActiveIcon = activeStage.icon;
@@ -1017,7 +1020,10 @@ export const HorizontalJourneySection: React.FC = () => {
       {/* Deep-Dive Stage Dossier Modal */}
       <AnimatePresence>
         {modalStage && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+          <div
+            data-lenis-prevent
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto overscroll-contain"
+          >
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -1029,10 +1035,11 @@ export const HorizontalJourneySection: React.FC = () => {
 
             {/* Modal Dialog Body */}
             <motion.div
+              data-lenis-prevent
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-2xl rounded-3xl border p-6 sm:p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto"
+              className="relative w-full max-w-2xl rounded-3xl border p-6 sm:p-8 shadow-2xl z-10 max-h-[90vh] overflow-y-auto overscroll-contain"
               style={{
                 backgroundColor: isDark ? '#0A0E18' : '#FFFFFF',
                 borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)',

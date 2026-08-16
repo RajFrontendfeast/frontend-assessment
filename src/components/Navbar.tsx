@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Dna, Volume2, VolumeX, Menu, X, ArrowUpRight, Cpu, Sparkles, Palette } from 'lucide-react';
 import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
+import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 
 interface NavbarProps {
   onOpenPartner: () => void;
@@ -15,6 +16,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
   const [templateMenuOpen, setTemplateMenuOpen] = useState(false);
   const [isAudioMuted, setIsAudioMuted] = useState(true);
   const [activeSection, setActiveSection] = useState('hero');
+
+  useBodyScrollLock(mobileMenuOpen);
 
   useEffect(() => {
     let ticking = false;
@@ -293,10 +296,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
+            data-lenis-prevent
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-b px-4 py-6 overflow-hidden backdrop-blur-2xl shadow-xl"
+            className="md:hidden border-b px-4 py-6 max-h-[80vh] overflow-y-auto overscroll-contain backdrop-blur-2xl shadow-xl"
             style={{
               backgroundColor: isDark ? '#070B13' : '#FFFFFF',
               borderColor: isDark ? '#1E293B' : '#E2E8F0',
