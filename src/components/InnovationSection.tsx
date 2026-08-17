@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { Dna, Sparkles, Layers, Cpu, CheckCircle2, Binary, ShieldCheck, ArrowRight, Activity, Terminal, Zap } from 'lucide-react';
-import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
 import { centerTabInContainer } from '../utils/tabScroll';
 
@@ -205,7 +204,6 @@ export const InnovationSection: React.FC = () => {
                 key={pillar.id}
                 ref={(el) => (mobileTabRefs.current[idx] = el)}
                 onClick={() => {
-                  bioSound.playClick(500 + idx * 60);
                   setActiveTab(idx);
                   if (mobileTabContainerRef.current && mobileTabRefs.current[idx]) {
                     centerTabInContainer(mobileTabContainerRef.current, mobileTabRefs.current[idx]);
@@ -244,12 +242,6 @@ export const InnovationSection: React.FC = () => {
             transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
             className="hidden lg:block lg:col-span-5 relative"
           >
-            {/* Center connecting laser rail */}
-            <div
-              className="absolute left-6 top-8 bottom-8 w-0.5 opacity-20"
-              style={{ backgroundColor: currentTemplate.palette.primary }}
-            />
-
             <div className="space-y-4">
               {pillars.map((pillar, idx) => {
                 const Icon = pillar.icon;
@@ -259,7 +251,6 @@ export const InnovationSection: React.FC = () => {
                     key={pillar.id}
                     id={`tab-pillar-${pillar.id}`}
                     onClick={() => {
-                      bioSound.playClick(500 + idx * 60);
                       setActiveTab(idx);
                     }}
                     className={`w-full p-5 rounded-2xl text-left transition-all duration-300 relative flex items-start gap-4 ${

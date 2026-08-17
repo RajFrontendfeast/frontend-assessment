@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { Sparkles, ArrowRight, Download, Mail, CheckCircle2, ShieldCheck, Dna, FileText, Activity } from 'lucide-react';
-import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
 
 interface CtaSectionProps {
@@ -27,13 +26,10 @@ export const CtaSection: React.FC<CtaSectionProps> = ({ onOpenPartner }) => {
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes('@')) return;
-    bioSound.playClick(600);
     setIsSubscribed(true);
-    bioSound.playSynthesisSuccess();
   };
 
   const handleDownloadWhitepaper = () => {
-    bioSound.playClick(500);
     setDownloadNotice(true);
     setTimeout(() => setDownloadNotice(false), 4000);
   };
@@ -129,7 +125,6 @@ export const CtaSection: React.FC<CtaSectionProps> = ({ onOpenPartner }) => {
               <button
                 id="btn-cta-partner"
                 onClick={() => {
-                  bioSound.playClick(750);
                   onOpenPartner();
                 }}
                 className="w-full py-4 px-6 rounded-full font-mono font-bold text-xs tracking-wider flex items-center justify-center gap-2.5 shadow-2xl hover:scale-[1.03] active:scale-[0.98] transition-all"

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Dna, ShieldCheck, Globe2, ExternalLink, ArrowUp, Cpu } from 'lucide-react';
-import { bioSound } from '../utils/sound';
 
 export const Footer: React.FC = () => {
   const [utcTime, setUtcTime] = useState<string>('');
@@ -16,7 +15,6 @@ export const Footer: React.FC = () => {
   }, []);
 
   const scrollToTop = () => {
-    bioSound.playClick(500);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

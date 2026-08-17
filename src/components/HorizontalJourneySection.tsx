@@ -27,7 +27,6 @@ import {
   Database,
   FileText
 } from 'lucide-react';
-import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 import { centerTabInContainer } from '../utils/tabScroll';
@@ -326,22 +325,18 @@ export const HorizontalJourneySection: React.FC = () => {
   });
 
   const handleSelectStage = (index: number) => {
-    bioSound.playClick(600);
     setSelectedStageIndex(index);
   };
 
   const handleNextStage = () => {
-    bioSound.playClick(700);
     setSelectedStageIndex((prev) => (prev + 1) % JOURNEY_STAGES.length);
   };
 
   const handlePrevStage = () => {
-    bioSound.playClick(500);
     setSelectedStageIndex((prev) => (prev - 1 + JOURNEY_STAGES.length) % JOURNEY_STAGES.length);
   };
 
   const handleFilterChange = (cat: CategoryFilter) => {
-    bioSound.playClick(550);
     setActiveCategoryFilter(cat);
     // If current selected stage doesn't match filter, select first matching
     if (cat !== 'all') {
@@ -353,7 +348,6 @@ export const HorizontalJourneySection: React.FC = () => {
   };
 
   const handleTriggerSimulation = () => {
-    bioSound.playClick(800);
     setIsSimulating(true);
     setTimeout(() => {
       setIsSimulating(false);
@@ -760,7 +754,6 @@ export const HorizontalJourneySection: React.FC = () => {
 
                   <button
                     onClick={() => {
-                      bioSound.playClick(650);
                       setModalStage(activeStage);
                     }}
                     className="px-4 py-2 rounded-full border text-xs font-mono font-bold flex items-center gap-2 transition-all hover:scale-105 shadow-sm"

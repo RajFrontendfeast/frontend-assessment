@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { MapPin, ShieldCheck, Cpu, Building2, CheckCircle2, Globe2, Activity, Zap } from 'lucide-react';
 import { LAB_LOCATIONS } from '../data/biotechData';
-import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
 import { centerTabInContainer } from '../utils/tabScroll';
 
@@ -101,7 +100,6 @@ export const BioFoundrySection: React.FC = () => {
                 key={loc.city}
                 ref={(el) => (mobileTabRefs.current[idx] = el)}
                 onClick={() => {
-                  bioSound.playClick(500 + idx * 50);
                   setActiveLocIdx(idx);
                   if (mobileContainerRef.current && mobileTabRefs.current[idx]) {
                     centerTabInContainer(mobileContainerRef.current, mobileTabRefs.current[idx]);
@@ -146,7 +144,6 @@ export const BioFoundrySection: React.FC = () => {
                 <button
                   key={loc.city}
                   onClick={() => {
-                    bioSound.playClick(500 + idx * 50);
                     setActiveLocIdx(idx);
                   }}
                   className={`w-full p-5 rounded-2xl text-left border transition-all duration-300 flex items-start gap-4 ${

@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { BookOpen, ExternalLink, Award, FileText, ChevronDown, ChevronUp, Quote, Activity } from 'lucide-react';
 import { SCIENTIFIC_PUBLICATIONS } from '../data/biotechData';
-import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
 import { centerTabInContainer } from '../utils/tabScroll';
 
@@ -39,7 +38,6 @@ export const PublicationsSection: React.FC = () => {
   );
 
   const toggleExpand = (id: string) => {
-    bioSound.playClick(500);
     setExpandedPubId(expandedPubId === id ? null : id);
   };
 
@@ -106,7 +104,6 @@ export const PublicationsSection: React.FC = () => {
                 key={cat}
                 ref={(el) => (tabRefs.current[cat] = el)}
                 onClick={() => {
-                  bioSound.playClick(600);
                   setSelectedCategory(cat);
                   if (tabContainerRef.current && tabRefs.current[cat]) {
                     centerTabInContainer(tabContainerRef.current, tabRefs.current[cat]);

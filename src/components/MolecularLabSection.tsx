@@ -3,7 +3,6 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { FlaskConical, Play, Sparkles, CheckCircle2, Shield, Activity, Dna, Download, ArrowRight, RefreshCw, Sliders, Terminal, Zap } from 'lucide-react';
 import { MOLECULAR_TARGETS } from '../data/biotechData';
 import { VirtualExperimentResult } from '../types';
-import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
 
 interface MolecularLabSectionProps {
@@ -41,7 +40,6 @@ export const MolecularLabSection: React.FC<MolecularLabSectionProps> = ({ onOpen
   const handleRunSimulation = () => {
     setIsSimulating(true);
     setResult(null);
-    bioSound.playClick(600);
 
     setTimeout(() => {
       setIsSimulating(false);
@@ -63,8 +61,6 @@ export const MolecularLabSection: React.FC<MolecularLabSectionProps> = ({ onOpen
         syntheticReadiness: readiness,
         recommendation: computedKd < 0.05 ? 'Highly Favorable' : 'Candidate Viable',
       });
-
-      bioSound.playSynthesisSuccess();
     }, 1400);
   };
 
@@ -146,7 +142,6 @@ export const MolecularLabSection: React.FC<MolecularLabSectionProps> = ({ onOpen
                 <select
                   value={selectedTargetId}
                   onChange={(e) => {
-                    bioSound.playClick(500);
                     setSelectedTargetId(e.target.value);
                   }}
                   className="w-full max-w-full px-4 py-3 rounded-2xl border font-mono text-xs focus:outline-none transition-colors shadow-sm truncate pr-8 cursor-pointer"
@@ -207,7 +202,6 @@ export const MolecularLabSection: React.FC<MolecularLabSectionProps> = ({ onOpen
                       key={mod}
                       type="button"
                       onClick={() => {
-                        bioSound.playClick(600);
                         setSelectedModality(mod);
                       }}
                       className={`w-full p-3 rounded-2xl text-left text-xs font-mono transition-all flex items-center justify-between border ${
@@ -365,7 +359,6 @@ export const MolecularLabSection: React.FC<MolecularLabSectionProps> = ({ onOpen
               </span>
               <button
                 onClick={() => {
-                  bioSound.playClick(600);
                   onOpenPartner();
                 }}
                 className="px-4 py-2 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white flex items-center gap-1.5 transition-colors border border-slate-700"

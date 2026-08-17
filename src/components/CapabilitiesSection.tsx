@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Dna, Sparkles, Activity, Layers, Play, Check, Sliders, RefreshCw, Zap, ShieldCheck, Cpu, Terminal, CheckCircle2 } from 'lucide-react';
 import { PLATFORM_CAPABILITIES } from '../data/biotechData';
-import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
 import { centerTabInContainer } from '../utils/tabScroll';
 
@@ -41,20 +40,16 @@ export const CapabilitiesSection: React.FC = () => {
 
   const handleSimulateFold = () => {
     setIsFolding(true);
-    bioSound.playClick(600);
     setTimeout(() => {
       setFoldIter((prev) => (prev >= 8 ? 1 : prev + 1));
       setIsFolding(false);
-      bioSound.playChime(880, 0.2);
     }, 600);
   };
 
   const handleScanMicroenvironment = () => {
     setIsScanningTME(true);
-    bioSound.playClick(620);
     setTimeout(() => {
       setIsScanningTME(false);
-      bioSound.playChime(920, 0.15);
     }, 700);
   };
 
@@ -129,7 +124,6 @@ export const CapabilitiesSection: React.FC = () => {
                 ref={(el) => (tabRefs.current[cap.id] = el)}
                 id={`btn-cap-${cap.id}`}
                 onClick={() => {
-                  bioSound.playClick(550);
                   setActiveCapId(cap.id);
                   if (tabContainerRef.current && tabRefs.current[cap.id]) {
                     centerTabInContainer(tabContainerRef.current, tabRefs.current[cap.id]);
@@ -307,7 +301,6 @@ export const CapabilitiesSection: React.FC = () => {
                     <button
                       key={target}
                       onClick={() => {
-                        bioSound.playClick(600);
                         setSelectedPromoter(target);
                       }}
                       className={`py-2 px-1 rounded-xl border text-center transition-all ${
@@ -366,7 +359,6 @@ export const CapabilitiesSection: React.FC = () => {
                     <button
                       key={route}
                       onClick={() => {
-                        bioSound.playClick(580);
                         setDeliveryRoute(route);
                       }}
                       className={`py-2 px-1 rounded-xl border text-center transition-all ${
@@ -425,7 +417,6 @@ export const CapabilitiesSection: React.FC = () => {
                     <button
                       key={cell}
                       onClick={() => {
-                        bioSound.playClick(600);
                         setSelectedCellType(cell);
                       }}
                       className={`p-2.5 rounded-xl border text-left transition-colors truncate ${

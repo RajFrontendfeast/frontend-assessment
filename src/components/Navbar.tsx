@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Dna, Volume2, VolumeX, Menu, X, ArrowUpRight, Cpu, Sparkles, Palette } from 'lucide-react';
-import { bioSound } from '../utils/sound';
+import { Dna, Menu, X, ArrowUpRight, Cpu, Sparkles, Palette } from 'lucide-react';
 import { useDesignTemplate } from '../context/TemplateContext';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 
@@ -14,7 +13,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [templateMenuOpen, setTemplateMenuOpen] = useState(false);
-  const [isAudioMuted, setIsAudioMuted] = useState(true);
   const [activeSection, setActiveSection] = useState('hero');
 
   useBodyScrollLock(mobileMenuOpen);
@@ -52,11 +50,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleToggleAudio = () => {
-    const newMuted = bioSound.toggleMute();
-    setIsAudioMuted(newMuted);
-  };
-
   const navLinks = [
     { label: 'Innovation', href: '#innovation', id: 'innovation' },
     { label: 'Journey', href: '#journey', id: 'journey' },
@@ -83,7 +76,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
         {/* Brand Logo */}
         <a
           href="#hero"
-          onClick={() => bioSound.playClick(500)}
           className="flex items-center gap-1.5 sm:gap-3 group select-none min-w-0 shrink"
         >
           <div
@@ -141,7 +133,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
               <a
                 key={link.id}
                 href={link.href}
-                onClick={() => bioSound.playClick(650)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all ${
                   isActive
                     ? 'shadow-sm font-bold'
@@ -169,7 +160,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
             <button
               id="btn-nav-template-toggle"
               onClick={() => {
-                bioSound.playClick(620);
                 setTemplateMenuOpen(!templateMenuOpen);
               }}
               title="Change UI Design Template"
@@ -241,26 +231,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
             </AnimatePresence>
           </div>
 
-          {/* Sound Synthesizer Toggle */}
-          <button
-            id="btn-toggle-sound"
-            onClick={handleToggleAudio}
-            title={isAudioMuted ? 'Enable Scientific Audio Feedback' : 'Mute Audio'}
-            className="p-1.5 sm:p-2 rounded-xl border transition-all text-xs flex items-center justify-center shadow-sm shrink-0"
-            style={{
-              backgroundColor: isDark ? '#0D1424' : '#FFFFFF',
-              borderColor: !isAudioMuted ? currentTemplate.palette.primary : isDark ? '#1E293B' : '#E2E8F0',
-              color: !isAudioMuted ? currentTemplate.palette.primary : currentTemplate.palette.mutedText,
-            }}
-          >
-            {!isAudioMuted ? <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
-          </button>
-
           {/* Partner CTA */}
           <button
             id="btn-nav-partner"
             onClick={() => {
-              bioSound.playClick(750);
               onOpenPartner();
             }}
             className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl text-white text-xs font-bold font-mono tracking-wider shadow-sm hover:shadow transition-all hover:scale-[1.02] active:scale-[0.98]"
@@ -277,7 +251,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
           <button
             id="btn-mobile-menu-toggle"
             onClick={() => {
-              bioSound.playClick(500);
               setMobileMenuOpen(!mobileMenuOpen);
             }}
             className="md:hidden p-1.5 sm:p-2 rounded-xl border shadow-sm shrink-0"
@@ -313,7 +286,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
                   key={link.id}
                   href={link.href}
                   onClick={() => {
-                    bioSound.playClick(600);
                     setMobileMenuOpen(false);
                   }}
                   className="px-4 py-2.5 rounded-xl text-sm font-medium transition-colors"

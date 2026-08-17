@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { DesignTemplateId, DesignTemplateConfig } from '../types';
 import { DESIGN_TEMPLATES } from '../data/templates';
-import { bioSound } from '../utils/sound';
 
 interface TemplateContextType {
   currentTemplateId: DesignTemplateId;
@@ -37,7 +36,6 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const setTemplate = (id: DesignTemplateId) => {
     setCurrentTemplateId(id);
-    bioSound.playChime(620, 0.25);
   };
 
   return (

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Play, RotateCcw, Zap, Sparkles, Activity, Eye } from 'lucide-react';
-import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
 
 type SimulationMode = 'dna-helix' | 'receptor-docking' | 'nanoparticle';
@@ -46,7 +45,6 @@ export const BioCanvas: React.FC<BioCanvasProps> = ({
     setIsMutating(true);
     setMutationCount((prev) => prev + 1);
     setEnergyScore((prev) => Number((prev + (Math.random() * 4 - 2)).toFixed(2)));
-    bioSound.playChime(780, 0.2);
     setTimeout(() => setIsMutating(false), 1200);
   }, []);
 
@@ -55,7 +53,6 @@ export const BioCanvas: React.FC<BioCanvasProps> = ({
     mouseRef.current.targetRotX = 0.2;
     mouseRef.current.targetRotY = 0;
     setEnergyScore(-42.8);
-    bioSound.playClick(440);
   }, []);
 
   useEffect(() => {
@@ -562,7 +559,6 @@ export const BioCanvas: React.FC<BioCanvasProps> = ({
           id="btn-mode-dna"
           onClick={() => {
             setMode('dna-helix');
-            bioSound.playClick(600);
           }}
           className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5 ${
             mode === 'dna-helix'
@@ -582,7 +578,6 @@ export const BioCanvas: React.FC<BioCanvasProps> = ({
           id="btn-mode-docking"
           onClick={() => {
             setMode('receptor-docking');
-            bioSound.playClick(700);
           }}
           className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5 ${
             mode === 'receptor-docking'
@@ -602,7 +597,6 @@ export const BioCanvas: React.FC<BioCanvasProps> = ({
           id="btn-mode-nanoparticle"
           onClick={() => {
             setMode('nanoparticle');
-            bioSound.playClick(800);
           }}
           className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5 ${
             mode === 'nanoparticle'
@@ -703,7 +697,6 @@ export const BioCanvas: React.FC<BioCanvasProps> = ({
             id="btn-bio-toggle-rot"
             onClick={() => {
               setIsRotating(!isRotating);
-              bioSound.playClick(500);
             }}
             className="flex items-center gap-1 font-medium"
           >
@@ -723,7 +716,6 @@ export const BioCanvas: React.FC<BioCanvasProps> = ({
             id="btn-bio-speed"
             onClick={() => {
               setRotationSpeed((s) => (s === 1 ? 2 : s === 2 ? 0.5 : 1));
-              bioSound.playClick(650);
             }}
             className="text-[11px] transition-colors font-bold"
             style={{ color: currentTemplate.palette.accent }}

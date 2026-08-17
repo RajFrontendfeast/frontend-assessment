@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowRight, Dna, Sparkles, Activity, ShieldCheck, Database, FlaskConical, ChevronDown, Binary, Atom } from 'lucide-react';
 import { BioCanvas } from './BioCanvas';
-import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
 
 interface HeroProps {
@@ -154,7 +153,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPartner }) => {
             >
               <a
                 href="#pipeline"
-                onClick={() => bioSound.playClick(650)}
                 className="w-full sm:w-auto text-center px-6 py-3.5 rounded-full font-mono font-bold text-xs tracking-wider flex items-center justify-center gap-2.5 shadow-lg hover:shadow-2xl hover:scale-[1.03] active:scale-[0.98] transition-all"
                 style={{
                   backgroundColor: currentTemplate.palette.primary,
@@ -167,7 +165,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPartner }) => {
 
               <a
                 href="#journey"
-                onClick={() => bioSound.playClick(550)}
                 className="w-full sm:w-auto text-center px-6 py-3.5 rounded-full font-mono font-semibold text-xs tracking-wider flex items-center justify-center gap-2 border shadow-sm active:scale-[0.98] transition-all hover:scale-[1.02]"
                 style={{
                   backgroundColor: isDark ? 'rgba(13, 20, 36, 0.7)' : 'rgba(255, 255, 255, 0.8)',
@@ -292,7 +289,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPartner }) => {
       >
         <a
           href="#innovation"
-          onClick={() => bioSound.playClick(450)}
           className="inline-flex items-center gap-2 px-5 py-2 rounded-full border text-xs font-mono transition-all shadow-sm hover:scale-105"
           style={{
             backgroundColor: isDark ? 'rgba(13, 20, 36, 0.8)' : 'rgba(255, 255, 255, 0.9)',

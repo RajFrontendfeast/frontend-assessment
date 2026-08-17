@@ -3,7 +3,6 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { Search, Activity, ChevronRight, Dna, ShieldCheck, Sparkles, Filter, ArrowUpRight, Check, Layers } from 'lucide-react';
 import { PIPELINE_ASSETS } from '../data/biotechData';
 import { TherapeuticArea, PipelineAsset, ClinicalPhase } from '../types';
-import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
 import { centerTabInContainer } from '../utils/tabScroll';
 
@@ -166,7 +165,6 @@ export const PipelineSection: React.FC<PipelineSectionProps> = ({ onSelectAsset 
               ref={(el) => (tabRefs.current[area] = el)}
               id={`filter-pipeline-${area.toLowerCase().replace(/\s+/g, '-')}`}
               onClick={() => {
-                bioSound.playClick(600);
                 setSelectedArea(area);
                 if (tabContainerRef.current && tabRefs.current[area]) {
                   centerTabInContainer(tabContainerRef.current, tabRefs.current[area]);
@@ -228,7 +226,6 @@ export const PipelineSection: React.FC<PipelineSectionProps> = ({ onSelectAsset 
                     viewport={{ once: true, margin: '-40px' }}
                     transition={{ delay: idx * 0.06, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                     onClick={() => {
-                      bioSound.playClick(600);
                       onSelectAsset(asset);
                     }}
                     className="p-5 sm:p-6 rounded-2xl border backdrop-blur-md transition-all duration-300 cursor-pointer group hover:translate-x-1 shadow-sm hover:shadow-xl"

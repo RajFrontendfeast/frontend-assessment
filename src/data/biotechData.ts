@@ -478,3 +478,68 @@ export const LAB_LOCATIONS: LabLocation[] = [
     coords: { x: 46, y: 29 }
   }
 ];
+
+/**
+ * Data Accessors & Query Selectors
+ * Follows clean architectural repository patterns for enterprise React applications.
+ */
+
+export function getPipelineAssetById(id: string): PipelineAsset | undefined {
+  return PIPELINE_ASSETS.find((asset) => asset.id === id || asset.code.toLowerCase() === id.toLowerCase());
+}
+
+export function getAssetsByTherapeuticArea(area: string): PipelineAsset[] {
+  if (!area || area === 'All') return [...PIPELINE_ASSETS];
+  return PIPELINE_ASSETS.filter((asset) => asset.therapeuticArea.toLowerCase() === area.toLowerCase());
+}
+
+export function searchPipelineAssets(query: string): PipelineAsset[] {
+  if (!query || !query.trim()) return [...PIPELINE_ASSETS];
+  const q = query.toLowerCase().trim();
+  return PIPELINE_ASSETS.filter(
+    (asset) =>
+      asset.name.toLowerCase().includes(q) ||
+      asset.code.toLowerCase().includes(q) ||
+      asset.target.toLowerCase().includes(q) ||
+      asset.indication.toLowerCase().includes(q) ||
+      asset.therapeuticArea.toLowerCase().includes(q)
+  );
+}
+
+export function getCapabilityById(id: string): PlatformCapability | undefined {
+  return PLATFORM_CAPABILITIES.find((cap) => cap.id === id);
+}
+
+export function getPublicationById(id: string): Publication | undefined {
+  return SCIENTIFIC_PUBLICATIONS.find((pub) => pub.id === id);
+}
+
+export function filterPublicationsByCategory(category: string): Publication[] {
+  if (!category || category === 'All') return [...SCIENTIFIC_PUBLICATIONS];
+  return SCIENTIFIC_PUBLICATIONS.filter((pub) => pub.category.toLowerCase() === category.toLowerCase());
+}
+
+export function getMolecularTargetById(id: string): MolecularTarget | undefined {
+  return MOLECULAR_TARGETS.find((target) => target.id === id || target.symbol.toLowerCase() === id.toLowerCase());
+}
+
+export function calculatePipelineSummary() {
+  const totalAssets = PIPELINE_ASSETS.length;
+  const inClinical = PIPELINE_ASSETS.filter((a) => a.phase.startsWith('Phase')).length;
+  const preClinical = PIPELINE_ASSETS.filter((a) => a.phase === 'Preclinical' || a.phase === 'Discovery').length;
+  const totalMilestones = PIPELINE_ASSETS.reduce((sum, a) => sum + a.milestones.length, 0);
+  const completedMilestones = PIPELINE_ASSETS.reduce(
+    (sum, a) => sum + a.milestones.filter((m) => m.completed).length,
+    0
+  );
+
+  return {
+    totalAssets,
+    inClinical,
+    preClinical,
+    totalMilestones,
+    completedMilestones,
+    milestoneCompletionRate: totalMilestones > 0 ? Math.round((completedMilestones / totalMilestones) * 100) : 0,
+  };
+}
+

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Palette, Check, Sparkles, Sliders, ChevronDown, ChevronUp, Sun, Moon, Info, X } from 'lucide-react';
 import { useDesignTemplate } from '../context/TemplateContext';
-import { bioSound } from '../utils/sound';
 import { DesignTemplateId } from '../types';
 
 export const TemplateSwitcher: React.FC = () => {
@@ -12,7 +11,6 @@ export const TemplateSwitcher: React.FC = () => {
 
   const handleSelect = (id: DesignTemplateId) => {
     setTemplate(id);
-    bioSound.playClick(600);
   };
 
   return (
@@ -172,7 +170,6 @@ export const TemplateSwitcher: React.FC = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => {
-            bioSound.playClick(680);
             setIsOpen(!isOpen);
           }}
           className="flex items-center gap-2.5 px-4 py-2.5 rounded-full shadow-xl border backdrop-blur-xl font-mono text-xs font-bold transition-all"

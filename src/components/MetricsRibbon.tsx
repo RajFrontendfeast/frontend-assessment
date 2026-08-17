@@ -3,7 +3,6 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import { TrendingUp, Award, Cpu, ShieldCheck, Zap, ArrowUpRight, Activity } from 'lucide-react';
 import { IMPACT_STATS } from '../data/biotechData';
 import { AnimatedCounter } from './AnimatedCounter';
-import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
 
 export const MetricsRibbon: React.FC = () => {
@@ -114,7 +113,6 @@ export const MetricsRibbon: React.FC = () => {
                 whileInView={{ opacity: 1, x: 0, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ delay: idx * 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                onMouseEnter={() => bioSound.playClick(600 + idx * 40)}
                 className="p-6 sm:p-7 flex flex-col justify-between group transition-all duration-300 hover:bg-black/5 dark:hover:bg-white/5"
               >
                 <div>

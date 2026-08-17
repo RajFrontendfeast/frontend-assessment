@@ -2,7 +2,6 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, CheckCircle2, Shield, FileText, ArrowRight, Dna, Activity, ExternalLink, Download } from 'lucide-react';
 import { PipelineAsset } from '../types';
-import { bioSound } from '../utils/sound';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 
 interface PipelineModalProps {
@@ -69,7 +68,6 @@ export const PipelineModal: React.FC<PipelineModalProps> = ({
             <button
               id="btn-close-pipeline-modal"
               onClick={() => {
-                bioSound.playClick(400);
                 onClose();
               }}
               className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition-colors border border-slate-200"
@@ -174,7 +172,6 @@ export const PipelineModal: React.FC<PipelineModalProps> = ({
             <button
               id="btn-download-dossier"
               onClick={() => {
-                bioSound.playClick(600);
                 alert(`Preclinical Data Dossier for ${asset.code} has been prepared for download.`);
               }}
               className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-slate-900 text-xs font-semibold flex items-center gap-2 border border-slate-200 transition-colors"
@@ -186,7 +183,6 @@ export const PipelineModal: React.FC<PipelineModalProps> = ({
             <button
               id="btn-partner-asset"
               onClick={() => {
-                bioSound.playClick(700);
                 onClose();
                 if (onOpenPartnerWithAsset) {
                   onOpenPartnerWithAsset(asset.code);

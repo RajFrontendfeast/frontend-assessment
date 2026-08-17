@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Send, CheckCircle2, Sparkles, Building2, User, Mail, MessageSquare, AlertCircle } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { bioSound } from '../utils/sound';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 
 interface PartnerModalProps {
@@ -37,18 +36,15 @@ export const PartnerModal: React.FC<PartnerModalProps> = ({
     e.preventDefault();
     if (!formData.fullName.trim() || !formData.workEmail.trim() || !formData.organization.trim()) {
       setErrorMessage('Please complete all required fields.');
-      bioSound.playClick(300);
       return;
     }
 
     setErrorMessage('');
     setIsSubmitting(true);
-    bioSound.playClick(600);
 
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-      bioSound.playSynthesisSuccess();
 
       // Trigger confetti celebration
       try {
@@ -103,7 +99,6 @@ export const PartnerModal: React.FC<PartnerModalProps> = ({
           <button
             id="btn-close-partner-modal"
             onClick={() => {
-              bioSound.playClick(400);
               onClose();
             }}
             className="absolute top-6 right-6 p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 transition-colors border border-slate-200"
