@@ -1,10 +1,11 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { Search, Activity, ChevronRight, Dna, ShieldCheck, Sparkles, Filter, ArrowUpRight, Check, Layers } from 'lucide-react';
 import { PIPELINE_ASSETS } from '../data/biotechData';
 import { TherapeuticArea, PipelineAsset, ClinicalPhase } from '../types';
 import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
+import { centerTabInContainer } from '../utils/tabScroll';
 
 interface PipelineSectionProps {
   onSelectAsset: (asset: PipelineAsset) => void;
@@ -16,6 +17,8 @@ export const PipelineSection: React.FC<PipelineSectionProps> = ({ onSelectAsset 
   const { currentTemplate } = useDesignTemplate();
   const isDark = currentTemplate.mode === 'dark';
   const sectionRef = useRef<HTMLDivElement>(null);
+  const tabContainerRef = useRef<HTMLDivElement>(null);
+  const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
 
   const [selectedArea, setSelectedArea] = useState<TherapeuticArea>('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,6 +29,15 @@ export const PipelineSection: React.FC<PipelineSectionProps> = ({ onSelectAsset 
   });
 
   const waterMarkX = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+
+  // Center active tab when clicked or selected on mobile without page shift
+  useEffect(() => {
+    const container = tabContainerRef.current;
+    const target = tabRefs.current[selectedArea];
+    if (container && target) {
+      centerTabInContainer(container, target);
+    }
+  }, [selectedArea]);
 
   const therapeuticAreas: TherapeuticArea[] = [
     'All',
@@ -141,21 +153,26 @@ export const PipelineSection: React.FC<PipelineSectionProps> = ({ onSelectAsset 
 
         {/* Therapeutic Area Filter Tabs: Slide from LEFT */}
         <motion.div
+          ref={tabContainerRef}
           initial={{ opacity: 0, x: -60 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.75, delay: 0.2 }}
-          className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar"
+          className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar max-w-full"
         >
           {therapeuticAreas.map((area) => (
             <button
               key={area}
+              ref={(el) => (tabRefs.current[area] = el)}
               id={`filter-pipeline-${area.toLowerCase().replace(/\s+/g, '-')}`}
               onClick={() => {
                 bioSound.playClick(600);
                 setSelectedArea(area);
+                if (tabContainerRef.current && tabRefs.current[area]) {
+                  centerTabInContainer(tabContainerRef.current, tabRefs.current[area]);
+                }
               }}
-              className={`px-4 py-2 rounded-full text-xs font-mono font-semibold whitespace-nowrap transition-all ${
+              className={`px-4 py-2 rounded-full text-xs font-mono font-semibold whitespace-nowrap transition-all shrink-0 ${
                 selectedArea === area
                   ? 'shadow-sm font-bold scale-105'
                   : 'opacity-70 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/5'

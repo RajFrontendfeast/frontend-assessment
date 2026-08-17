@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Dna,
@@ -30,6 +30,7 @@ import {
 import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
+import { centerTabInContainer } from '../utils/tabScroll';
 
 interface JourneyStage {
   id: string;
@@ -285,6 +286,10 @@ type CategoryFilter = 'all' | 'in-silico' | 'wet-lab' | 'clinical';
 export const HorizontalJourneySection: React.FC = () => {
   const { currentTemplate } = useDesignTemplate();
   const isDark = currentTemplate.mode === 'dark';
+  const categoryContainerRef = useRef<HTMLDivElement>(null);
+  const categoryTabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
+  const stageContainerRef = useRef<HTMLDivElement>(null);
+  const stageTabRefs = useRef<{ [key: number]: HTMLButtonElement | null }>({});
 
   const [selectedStageIndex, setSelectedStageIndex] = useState<number>(0);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<CategoryFilter>('all');
@@ -293,6 +298,24 @@ export const HorizontalJourneySection: React.FC = () => {
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
 
   useBodyScrollLock(!!modalStage);
+
+  // Auto-center active stage tab in horizontal scroll container without page shift
+  useEffect(() => {
+    const container = stageContainerRef.current;
+    const target = stageTabRefs.current[selectedStageIndex];
+    if (container && target) {
+      centerTabInContainer(container, target);
+    }
+  }, [selectedStageIndex]);
+
+  // Auto-center active category filter tab in horizontal scroll container
+  useEffect(() => {
+    const container = categoryContainerRef.current;
+    const target = categoryTabRefs.current[activeCategoryFilter];
+    if (container && target) {
+      centerTabInContainer(container, target);
+    }
+  }, [activeCategoryFilter]);
 
   const activeStage = JOURNEY_STAGES[selectedStageIndex];
   const ActiveIcon = activeStage.icon;
@@ -421,7 +444,10 @@ export const HorizontalJourneySection: React.FC = () => {
         </motion.div>
 
         {/* Category Filters - Nowrap and horizontally scrollable on mobile */}
-        <div className="flex items-center sm:justify-center gap-2 mb-6 overflow-x-auto pb-2 no-scrollbar max-w-full">
+        <div
+          ref={categoryContainerRef}
+          className="flex items-center sm:justify-center gap-2 mb-6 overflow-x-auto pb-2 no-scrollbar max-w-full"
+        >
           {[
             { id: 'all' as CategoryFilter, label: 'All 6 Phases' },
             { id: 'in-silico' as CategoryFilter, label: '01-02 In Silico Physics' },
@@ -432,7 +458,13 @@ export const HorizontalJourneySection: React.FC = () => {
             return (
               <button
                 key={cat.id}
-                onClick={() => handleFilterChange(cat.id)}
+                ref={(el) => (categoryTabRefs.current[cat.id] = el)}
+                onClick={() => {
+                  handleFilterChange(cat.id);
+                  if (categoryContainerRef.current && categoryTabRefs.current[cat.id]) {
+                    centerTabInContainer(categoryContainerRef.current, categoryTabRefs.current[cat.id]);
+                  }
+                }}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-mono whitespace-nowrap shrink-0 transition-all duration-200 ${
                   isCatActive
                     ? 'font-bold shadow-md scale-105'
@@ -457,7 +489,8 @@ export const HorizontalJourneySection: React.FC = () => {
 
         {/* Portfolio Stage Tabs Navigation Ribbon */}
         <div
-          className="p-1.5 sm:p-2 rounded-2xl sm:rounded-3xl border backdrop-blur-xl mb-6 sm:mb-8 shadow-sm overflow-x-auto no-scrollbar"
+          ref={stageContainerRef}
+          className="p-1.5 sm:p-2 rounded-2xl sm:rounded-3xl border backdrop-blur-xl mb-6 sm:mb-8 shadow-sm overflow-x-auto no-scrollbar max-w-full"
           style={{
             backgroundColor: isDark ? 'rgba(13, 19, 33, 0.85)' : 'rgba(255, 255, 255, 0.95)',
             borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)',
@@ -472,8 +505,14 @@ export const HorizontalJourneySection: React.FC = () => {
               return (
                 <button
                   key={stage.id}
+                  ref={(el) => (stageTabRefs.current[idx] = el)}
                   id={`journey-tab-${stage.id}`}
-                  onClick={() => handleSelectStage(idx)}
+                  onClick={() => {
+                    handleSelectStage(idx);
+                    if (stageContainerRef.current && stageTabRefs.current[idx]) {
+                      centerTabInContainer(stageContainerRef.current, stageTabRefs.current[idx]);
+                    }
+                  }}
                   className={`relative p-2.5 sm:p-3 rounded-xl sm:rounded-2xl text-left transition-all duration-300 flex flex-col justify-between group min-w-[140px] sm:min-w-0 shrink-0 ${
                     isSelected
                       ? 'shadow-lg'

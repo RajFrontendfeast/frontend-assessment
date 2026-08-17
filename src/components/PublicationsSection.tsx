@@ -1,14 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { BookOpen, ExternalLink, Award, FileText, ChevronDown, ChevronUp, Quote, Activity } from 'lucide-react';
 import { SCIENTIFIC_PUBLICATIONS } from '../data/biotechData';
 import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
+import { centerTabInContainer } from '../utils/tabScroll';
 
 export const PublicationsSection: React.FC = () => {
   const { currentTemplate } = useDesignTemplate();
   const isDark = currentTemplate.mode === 'dark';
   const sectionRef = useRef<HTMLDivElement>(null);
+  const tabContainerRef = useRef<HTMLDivElement>(null);
+  const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
 
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [expandedPubId, setExpandedPubId] = useState<string | null>(null);
@@ -21,6 +24,15 @@ export const PublicationsSection: React.FC = () => {
   const watermarkX = useTransform(scrollYProgress, [0, 1], [-80, 80]);
 
   const categories = ['All', 'Structure', 'Epigenetics', 'AI Models', 'Clinical'];
+
+  // Center active category tab on selection / mobile scroll without page shift
+  useEffect(() => {
+    const container = tabContainerRef.current;
+    const target = tabRefs.current[selectedCategory];
+    if (container && target) {
+      centerTabInContainer(container, target);
+    }
+  }, [selectedCategory]);
 
   const filteredPubs = SCIENTIFIC_PUBLICATIONS.filter(
     (p) => selectedCategory === 'All' || p.category === selectedCategory
@@ -82,6 +94,7 @@ export const PublicationsSection: React.FC = () => {
 
           {/* Category Filter Pills: Slide from RIGHT */}
           <motion.div
+            ref={tabContainerRef}
             initial={{ opacity: 0, x: 60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-50px' }}
@@ -91,9 +104,13 @@ export const PublicationsSection: React.FC = () => {
             {categories.map((cat) => (
               <button
                 key={cat}
+                ref={(el) => (tabRefs.current[cat] = el)}
                 onClick={() => {
                   bioSound.playClick(600);
                   setSelectedCategory(cat);
+                  if (tabContainerRef.current && tabRefs.current[cat]) {
+                    centerTabInContainer(tabContainerRef.current, tabRefs.current[cat]);
+                  }
                 }}
                 className={`px-3.5 sm:px-4 py-2 rounded-full text-xs font-mono font-semibold whitespace-nowrap shrink-0 transition-all ${
                   selectedCategory === cat

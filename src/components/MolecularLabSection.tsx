@@ -138,29 +138,38 @@ export const MolecularLabSection: React.FC<MolecularLabSectionProps> = ({ onOpen
             </h3>
 
             {/* 1. Target Receptor Picker */}
-            <div>
+            <div className="w-full max-w-full overflow-hidden">
               <label className="block text-xs font-mono opacity-60 mb-2">
                 1. Select Target Macromolecule
               </label>
-              <select
-                value={selectedTargetId}
-                onChange={(e) => {
-                  bioSound.playClick(500);
-                  setSelectedTargetId(e.target.value);
-                }}
-                className="w-full px-4 py-3 rounded-2xl border font-mono text-xs focus:outline-none transition-colors shadow-sm"
-                style={{
-                  backgroundColor: isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.02)',
-                  borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.1)',
-                  color: currentTemplate.palette.textColor,
-                }}
-              >
-                {MOLECULAR_TARGETS.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.name} ({t.symbol}) — {t.class}
-                  </option>
-                ))}
-              </select>
+              <div className="relative w-full max-w-full">
+                <select
+                  value={selectedTargetId}
+                  onChange={(e) => {
+                    bioSound.playClick(500);
+                    setSelectedTargetId(e.target.value);
+                  }}
+                  className="w-full max-w-full px-4 py-3 rounded-2xl border font-mono text-xs focus:outline-none transition-colors shadow-sm truncate pr-8 cursor-pointer"
+                  style={{
+                    backgroundColor: isDark ? '#080D1A' : '#F8FAFC',
+                    borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.12)',
+                    color: currentTemplate.palette.textColor,
+                  }}
+                >
+                  {MOLECULAR_TARGETS.map((t) => (
+                    <option
+                      key={t.id}
+                      value={t.id}
+                      style={{
+                        backgroundColor: isDark ? '#080D1A' : '#FFFFFF',
+                        color: isDark ? '#FFFFFF' : '#0F172A',
+                      }}
+                    >
+                      {t.name} ({t.symbol}) — {t.class}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             {/* Target Details Badge */}

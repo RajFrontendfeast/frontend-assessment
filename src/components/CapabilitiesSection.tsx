@@ -1,21 +1,27 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { Dna, Sparkles, Activity, Layers, Play, Check, Sliders, RefreshCw, Zap, ShieldCheck, Cpu, Terminal } from 'lucide-react';
+import { Dna, Sparkles, Activity, Layers, Play, Check, Sliders, RefreshCw, Zap, ShieldCheck, Cpu, Terminal, CheckCircle2 } from 'lucide-react';
 import { PLATFORM_CAPABILITIES } from '../data/biotechData';
 import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
+import { centerTabInContainer } from '../utils/tabScroll';
 
 export const CapabilitiesSection: React.FC = () => {
   const { currentTemplate } = useDesignTemplate();
   const isDark = currentTemplate.mode === 'dark';
   const sectionRef = useRef<HTMLDivElement>(null);
+  const tabContainerRef = useRef<HTMLDivElement>(null);
+  const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
 
   const [activeCapId, setActiveCapId] = useState<string>('protein-design');
   const [foldIter, setFoldIter] = useState<number>(4);
   const [isFolding, setIsFolding] = useState<boolean>(false);
   const [methylationLevel, setMethylationLevel] = useState<number>(98);
+  const [selectedPromoter, setSelectedPromoter] = useState<string>('KRAS-G12D');
   const [dosageMg, setDosageMg] = useState<number>(15);
+  const [deliveryRoute, setDeliveryRoute] = useState<string>('Systemic IV');
   const [selectedCellType, setSelectedCellType] = useState<string>('Macrophage M2');
+  const [isScanningTME, setIsScanningTME] = useState<boolean>(false);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -23,6 +29,15 @@ export const CapabilitiesSection: React.FC = () => {
   });
 
   const bgFloatX = useTransform(scrollYProgress, [0, 1], [-60, 60]);
+
+  // Auto-center active tab in horizontal scrolling ribbon on mobile without page shift
+  useEffect(() => {
+    const container = tabContainerRef.current;
+    const target = tabRefs.current[activeCapId];
+    if (container && target) {
+      centerTabInContainer(container, target);
+    }
+  }, [activeCapId]);
 
   const handleSimulateFold = () => {
     setIsFolding(true);
@@ -32,6 +47,15 @@ export const CapabilitiesSection: React.FC = () => {
       setIsFolding(false);
       bioSound.playChime(880, 0.2);
     }, 600);
+  };
+
+  const handleScanMicroenvironment = () => {
+    setIsScanningTME(true);
+    bioSound.playClick(620);
+    setTimeout(() => {
+      setIsScanningTME(false);
+      bioSound.playChime(920, 0.15);
+    }, 700);
   };
 
   const activeCapability = PLATFORM_CAPABILITIES.find((c) => c.id === activeCapId) || PLATFORM_CAPABILITIES[0];
@@ -88,8 +112,9 @@ export const CapabilitiesSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Tactical Dial Selector Strip: Scrollable on mobile, grid on sm+ */}
+        {/* Tactical Dial Selector Strip: Scrollable on mobile with smooth auto-centering */}
         <motion.div
+          ref={tabContainerRef}
           initial={{ opacity: 0, x: -70 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: '-50px' }}
@@ -101,12 +126,16 @@ export const CapabilitiesSection: React.FC = () => {
             return (
               <button
                 key={cap.id}
+                ref={(el) => (tabRefs.current[cap.id] = el)}
                 id={`btn-cap-${cap.id}`}
                 onClick={() => {
                   bioSound.playClick(550);
                   setActiveCapId(cap.id);
+                  if (tabContainerRef.current && tabRefs.current[cap.id]) {
+                    centerTabInContainer(tabContainerRef.current, tabRefs.current[cap.id]);
+                  }
                 }}
-                className={`p-3.5 sm:p-5 rounded-2xl text-left border transition-all duration-300 flex flex-col justify-between min-w-[200px] sm:min-w-0 shrink-0 ${
+                className={`p-3.5 sm:p-5 rounded-2xl text-left border transition-all duration-300 flex flex-col justify-between min-w-[210px] sm:min-w-0 shrink-0 ${
                   isSelected ? 'shadow-lg scale-[1.02]' : 'opacity-70 hover:opacity-100 hover:scale-[1.01]'
                 }`}
                 style={{
@@ -118,12 +147,17 @@ export const CapabilitiesSection: React.FC = () => {
                     : isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
                 }}
               >
-                <span
-                  className="text-[10px] font-mono font-bold uppercase tracking-wider"
-                  style={{ color: currentTemplate.palette.primary }}
-                >
-                  {cap.badge}
-                </span>
+                <div className="flex items-center justify-between">
+                  <span
+                    className="text-[10px] font-mono font-bold uppercase tracking-wider"
+                    style={{ color: currentTemplate.palette.primary }}
+                  >
+                    {cap.badge}
+                  </span>
+                  {isSelected && (
+                    <span className="w-2 h-2 rounded-full" style={{ backgroundColor: currentTemplate.palette.primary }} />
+                  )}
+                </div>
                 <h3 className="text-xs sm:text-base font-heading font-bold mt-2 leading-tight" style={{ color: currentTemplate.palette.textColor }}>
                   {cap.title}
                 </h3>
@@ -210,7 +244,7 @@ export const CapabilitiesSection: React.FC = () => {
             initial={{ opacity: 0, x: 70 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="lg:col-span-6 p-6 sm:p-8 rounded-3xl border space-y-6 flex flex-col justify-between shadow-2xl"
+            className="lg:col-span-6 p-5 sm:p-8 rounded-3xl border space-y-6 flex flex-col justify-between shadow-2xl"
             style={{
               backgroundColor: isDark ? '#060911' : '#0F172A',
               borderColor: isDark ? '#1E293B' : '#334155',
@@ -225,8 +259,8 @@ export const CapabilitiesSection: React.FC = () => {
               <span className="text-[10px] text-slate-500">HPC SIMULATOR // ONLINE</span>
             </div>
 
-            {/* DEMO 1: Protein Fold */}
-            {activeCapId === 'protein-design' && (
+            {/* TAB 1: De Novo Protein Diffusion Fold */}
+            {(activeCapId === 'protein-design' || activeCapId === 'protein-folding') && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono text-slate-300">Conformation Iteration: #{foldIter}</span>
@@ -236,7 +270,7 @@ export const CapabilitiesSection: React.FC = () => {
                 </div>
 
                 <div className="h-32 rounded-2xl bg-slate-950 border border-slate-800 p-4 relative flex items-center justify-center overflow-hidden">
-                  <div className="text-center font-mono text-xs">
+                  <div className="text-center font-mono text-xs z-10">
                     <div className="text-emerald-400 font-bold mb-1">
                       {isFolding ? 'Computing All-Atom Gradient Descent...' : `Backbone Scaffold_${foldIter}.pdb [ACTIVE]`}
                     </div>
@@ -244,12 +278,14 @@ export const CapabilitiesSection: React.FC = () => {
                       Pocket Volume: {400 + foldIter * 12} Å³ • RMSD: {(0.8 - foldIter * 0.04).toFixed(2)} Å
                     </div>
                   </div>
+                  {/* Subtle animated background grid */}
+                  <div className="absolute inset-0 bio-grid-bg opacity-15 pointer-events-none" />
                 </div>
 
                 <button
                   onClick={handleSimulateFold}
                   disabled={isFolding}
-                  className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono font-bold text-xs flex items-center justify-center gap-2 transition-colors shadow-lg"
+                  className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono font-bold text-xs flex items-center justify-center gap-2 transition-colors shadow-lg active:scale-[0.98]"
                 >
                   <RefreshCw className={`w-3.5 h-3.5 ${isFolding ? 'animate-spin' : ''}`} />
                   <span>{isFolding ? 'SOLVING FREE ENERGY...' : 'MUTATE & OPTIMIZE CONFORMATION'}</span>
@@ -257,27 +293,57 @@ export const CapabilitiesSection: React.FC = () => {
               </div>
             )}
 
-            {/* DEMO 2: Epigenetic Switch */}
-            {activeCapId === 'epigenetic-editing' && (
+            {/* TAB 2: Epigenetic Switch Locus Control */}
+            {(activeCapId === 'epigenetic-switch' || activeCapId === 'epigenetic-editing') && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-300">H3K9me3 Methylation Density</span>
-                  <span className="text-xs font-mono text-cyan-400 font-bold">{methylationLevel}%</span>
+                  <span className="text-xs font-mono text-slate-300">Target Oncogene Promoter</span>
+                  <span className="text-xs font-mono text-cyan-400 font-bold">dCas9-KRAB-MeCP2</span>
                 </div>
 
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={methylationLevel}
-                  onChange={(e) => setMethylationLevel(Number(e.target.value))}
-                  className="w-full accent-emerald-500"
-                />
+                {/* Target Promoter Selectors */}
+                <div className="grid grid-cols-4 gap-1.5 font-mono text-[11px]">
+                  {['KRAS-G12D', 'MYC-P1', 'BCL2-Prom', 'HER2-Exon'].map((target) => (
+                    <button
+                      key={target}
+                      onClick={() => {
+                        bioSound.playClick(600);
+                        setSelectedPromoter(target);
+                      }}
+                      className={`py-2 px-1 rounded-xl border text-center transition-all ${
+                        selectedPromoter === target
+                          ? 'bg-cyan-950 border-cyan-400 text-cyan-300 font-bold'
+                          : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      {target}
+                    </button>
+                  ))}
+                </div>
 
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 font-mono text-xs space-y-1.5">
+                <div className="space-y-1.5 pt-1">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <span className="text-slate-300">H3K9me3 & CpG Methylation Density</span>
+                    <span className="text-cyan-400 font-bold">{methylationLevel}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={methylationLevel}
+                    onChange={(e) => setMethylationLevel(Number(e.target.value))}
+                    className="w-full accent-cyan-400 cursor-pointer"
+                  />
+                </div>
+
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 font-mono text-xs space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Oncogene Transcription:</span>
-                    <span className="text-emerald-400 font-bold">{100 - methylationLevel}%</span>
+                    <span className="text-slate-400">Target Locus:</span>
+                    <span className="text-cyan-300 font-bold">{selectedPromoter}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Transcriptional Silencing:</span>
+                    <span className="text-emerald-400 font-bold">{methylationLevel}% Repression</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Genomic DSB Cuts:</span>
@@ -287,52 +353,85 @@ export const CapabilitiesSection: React.FC = () => {
               </div>
             )}
 
-            {/* DEMO 3: PK/PD Simulation */}
-            {activeCapId === 'precision-pkpd' && (
+            {/* TAB 3: Quantum Biophysical PK/PD Modeling */}
+            {(activeCapId === 'pk-pd-simulator' || activeCapId === 'precision-pkpd') && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-300">Administered Dose (mg/kg)</span>
-                  <span className="text-xs font-mono text-violet-400 font-bold">{dosageMg} mg/kg</span>
+                  <span className="text-xs font-mono text-slate-300">Delivery Route & Route Modeling</span>
+                  <span className="text-xs font-mono text-violet-400 font-bold">PBPK Core v3.2</span>
                 </div>
 
-                <input
-                  type="range"
-                  min="5"
-                  max="50"
-                  value={dosageMg}
-                  onChange={(e) => setDosageMg(Number(e.target.value))}
-                  className="w-full accent-violet-500"
-                />
+                <div className="grid grid-cols-3 gap-1.5 font-mono text-[11px]">
+                  {['Systemic IV', 'Subcutaneous', 'BBB Transcytosis'].map((route) => (
+                    <button
+                      key={route}
+                      onClick={() => {
+                        bioSound.playClick(580);
+                        setDeliveryRoute(route);
+                      }}
+                      className={`py-2 px-1 rounded-xl border text-center transition-all ${
+                        deliveryRoute === route
+                          ? 'bg-violet-950 border-violet-400 text-violet-300 font-bold'
+                          : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      {route}
+                    </button>
+                  ))}
+                </div>
 
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 font-mono text-xs space-y-1.5">
+                <div className="space-y-1.5 pt-1">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <span className="text-slate-300">Administered Dosage</span>
+                    <span className="text-violet-400 font-bold">{dosageMg} mg/kg</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="5"
+                    max="50"
+                    value={dosageMg}
+                    onChange={(e) => setDosageMg(Number(e.target.value))}
+                    className="w-full accent-violet-400 cursor-pointer"
+                  />
+                </div>
+
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 font-mono text-xs space-y-2">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Predicted Cmax:</span>
                     <span className="text-emerald-400 font-bold">{(dosageMg * 4.2).toFixed(1)} ug/mL</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Tumor Tissue AUC:</span>
+                    <span className="text-slate-400">Target Tissue AUC:</span>
                     <span className="text-cyan-400 font-bold">{(dosageMg * 88).toFixed(0)} hr*ug/mL</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Projected Half-Life:</span>
+                    <span className="text-violet-300 font-bold">{Math.round(24 + dosageMg * 0.4)} Days (FcRn recycling)</span>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* DEMO 4: Spatial Multiomics */}
-            {activeCapId === 'spatial-cell-cartography' && (
+            {/* TAB 4: Multi-Omic Spatial Cartography */}
+            {(activeCapId === 'spatial-cartography' || activeCapId === 'spatial-cell-cartography') && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-300">Target Microenvironment Subpopulation</span>
+                  <span className="text-xs font-mono text-slate-300">Tissue Microenvironment Subpopulation</span>
+                  <span className="text-xs font-mono text-amber-400 font-bold">180 nm Resolution</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 font-mono text-xs">
-                  {['Macrophage M2', 'Exhausted CD8+ T-Cell', 'Cancer-Stroma Fibroblast', 'Dendritic DC1'].map((cell) => (
+                  {['Macrophage M2', 'Exhausted CD8+ T-Cell', 'Cancer-Stroma Fibroblast', 'Tertiary Lymphoid'].map((cell) => (
                     <button
                       key={cell}
-                      onClick={() => setSelectedCellType(cell)}
-                      className={`p-2.5 rounded-xl border text-left transition-colors ${
+                      onClick={() => {
+                        bioSound.playClick(600);
+                        setSelectedCellType(cell);
+                      }}
+                      className={`p-2.5 rounded-xl border text-left transition-colors truncate ${
                         selectedCellType === cell
-                          ? 'bg-cyan-950 border-cyan-500 text-cyan-300 font-bold'
-                          : 'bg-slate-950 border-slate-800 text-slate-400'
+                          ? 'bg-amber-950 border-amber-400 text-amber-300 font-bold'
+                          : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
                       }`}
                     >
                       {cell}
@@ -340,10 +439,29 @@ export const CapabilitiesSection: React.FC = () => {
                   ))}
                 </div>
 
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 font-mono text-xs space-y-1">
-                  <div className="text-emerald-400 font-bold">Single-Cell Profile: {selectedCellType}</div>
-                  <div className="text-slate-400 text-[11px]">Optical Resolution: 180 nm Multiplexed (10,000 genes)</div>
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 font-mono text-xs space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400">Selected Population:</span>
+                    <span className="text-amber-300 font-bold">{selectedCellType}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400">Gene Multiplexing:</span>
+                    <span className="text-emerald-400 font-bold">10,000 Transcripts / Slice</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400">Stromal Infiltration:</span>
+                    <span className="text-cyan-400 font-bold">High Density (Score 9.4/10)</span>
+                  </div>
                 </div>
+
+                <button
+                  onClick={handleScanMicroenvironment}
+                  disabled={isScanningTME}
+                  className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono font-bold text-xs flex items-center justify-center gap-2 transition-colors active:scale-[0.98]"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isScanningTME ? 'animate-spin' : ''}`} />
+                  <span>{isScanningTME ? 'RE-CONSTRUCTING 3D ATLAS...' : 'EXECUTE SINGLE-CELL SPATIAL SCAN'}</span>
+                </button>
               </div>
             )}
 

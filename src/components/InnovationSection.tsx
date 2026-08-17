@@ -1,13 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { Dna, Sparkles, Layers, Cpu, CheckCircle2, Binary, ShieldCheck, ArrowRight, Activity, Terminal, Zap } from 'lucide-react';
 import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
+import { centerTabInContainer } from '../utils/tabScroll';
 
 export const InnovationSection: React.FC = () => {
   const { currentTemplate } = useDesignTemplate();
   const isDark = currentTemplate.mode === 'dark';
   const sectionRef = useRef<HTMLDivElement>(null);
+  const mobileTabContainerRef = useRef<HTMLDivElement>(null);
+  const mobileTabRefs = useRef<{ [key: number]: HTMLButtonElement | null }>({});
+
   const [activeTab, setActiveTab] = useState<number>(0);
 
   const { scrollYProgress } = useScroll({
@@ -16,6 +20,15 @@ export const InnovationSection: React.FC = () => {
   });
 
   const bgFloatY = useTransform(scrollYProgress, [0, 1], [-80, 80]);
+
+  // Auto-center active pillar tab on mobile
+  useEffect(() => {
+    const container = mobileTabContainerRef.current;
+    const target = mobileTabRefs.current[activeTab];
+    if (container && target) {
+      centerTabInContainer(container, target);
+    }
+  }, [activeTab]);
 
   const pillars = [
     {
@@ -180,16 +193,23 @@ export const InnovationSection: React.FC = () => {
         </motion.div>
 
         {/* Mobile Horizontal Tab Selector Ribbon (Visible only on mobile/tablet < lg) */}
-        <div className="lg:hidden flex items-center gap-2 overflow-x-auto pb-2 mb-6 no-scrollbar max-w-full">
+        <div
+          ref={mobileTabContainerRef}
+          className="lg:hidden flex items-center gap-2 overflow-x-auto pb-2 mb-6 no-scrollbar max-w-full"
+        >
           {pillars.map((pillar, idx) => {
             const Icon = pillar.icon;
             const isActive = activeTab === idx;
             return (
               <button
                 key={pillar.id}
+                ref={(el) => (mobileTabRefs.current[idx] = el)}
                 onClick={() => {
                   bioSound.playClick(500 + idx * 60);
                   setActiveTab(idx);
+                  if (mobileTabContainerRef.current && mobileTabRefs.current[idx]) {
+                    centerTabInContainer(mobileTabContainerRef.current, mobileTabRefs.current[idx]);
+                  }
                 }}
                 className={`flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-mono whitespace-nowrap shrink-0 border transition-all ${
                   isActive

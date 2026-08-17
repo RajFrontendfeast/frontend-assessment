@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowRight, Dna, Sparkles, Activity, ShieldCheck, Database, FlaskConical, ChevronDown, Binary, Atom } from 'lucide-react';
 import { BioCanvas } from './BioCanvas';
@@ -13,6 +13,16 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPartner }) => {
   const { currentTemplate } = useDesignTemplate();
   const isDark = currentTemplate.mode === 'dark';
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isDesktop, setIsDesktop] = useState<boolean>(false);
+
+  useEffect(() => {
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+    checkDesktop();
+    window.addEventListener('resize', checkDesktop);
+    return () => window.removeEventListener('resize', checkDesktop);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -30,7 +40,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPartner }) => {
     <section
       id="hero"
       ref={containerRef}
-      className="relative min-h-[96vh] pt-28 pb-16 lg:pt-36 lg:pb-24 overflow-hidden flex flex-col justify-center transition-colors duration-500"
+      className="relative min-h-[96vh] pt-24 pb-14 sm:pt-28 sm:pb-16 lg:pt-36 lg:pb-24 overflow-hidden flex flex-col justify-center transition-colors duration-500"
     >
       {/* Background Kinetic Typographic Parallax Watermarks */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden select-none opacity-[0.035] dark:opacity-[0.05] flex flex-col justify-around">
@@ -74,16 +84,16 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPartner }) => {
         <span>[CRYSTAL_EM_RES // 0.74 Å]</span>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 sm:gap-16 lg:gap-14 items-center">
           
           {/* Left Architectural Column: Slides in from LEFT */}
           <motion.div
-            style={{ y: leftColY }}
+            style={{ y: isDesktop ? leftColY : 0 }}
             initial={{ opacity: 0, x: -80 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 space-y-6 text-left"
+            className="lg:col-span-6 space-y-6 text-left relative z-10"
           >
             {/* Top Eyebrow Tag: Slides down from TOP */}
             <motion.div
@@ -112,7 +122,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPartner }) => {
 
             {/* Main Headline with Editorial Accent */}
             <h1
-              className="text-4xl sm:text-5xl xl:text-6xl font-display font-extrabold tracking-tight leading-[1.1]"
+              className="text-3xl sm:text-5xl xl:text-6xl font-display font-extrabold tracking-tight leading-[1.15] sm:leading-[1.1]"
               style={{ color: currentTemplate.palette.textColor }}
             >
               Engineering the{' '}
@@ -129,7 +139,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPartner }) => {
 
             {/* Narrative Subtext */}
             <p
-              className="text-base sm:text-lg leading-relaxed max-w-xl font-sans"
+              className="text-sm sm:text-base lg:text-lg leading-relaxed max-w-xl font-sans"
               style={{ color: currentTemplate.palette.mutedText }}
             >
               Synthetix Bio unifies quantum generative physics and zero-break epigenetic engineering to transform unpredictable biological discovery into deterministic computation.
@@ -140,12 +150,12 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPartner }) => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35, duration: 0.7 }}
-              className="pt-2 flex flex-wrap items-center gap-4"
+              className="pt-2 flex flex-wrap items-center gap-3 sm:gap-4"
             >
               <a
                 href="#pipeline"
                 onClick={() => bioSound.playClick(650)}
-                className="px-6 py-3.5 rounded-full font-mono font-bold text-xs tracking-wider flex items-center gap-2.5 shadow-lg hover:shadow-2xl hover:scale-[1.03] active:scale-[0.98] transition-all"
+                className="w-full sm:w-auto text-center px-6 py-3.5 rounded-full font-mono font-bold text-xs tracking-wider flex items-center justify-center gap-2.5 shadow-lg hover:shadow-2xl hover:scale-[1.03] active:scale-[0.98] transition-all"
                 style={{
                   backgroundColor: currentTemplate.palette.primary,
                   color: isDark && currentTemplate.id === 'obsidian-cyber' ? '#041B15' : '#FFFFFF',
@@ -158,7 +168,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPartner }) => {
               <a
                 href="#journey"
                 onClick={() => bioSound.playClick(550)}
-                className="px-6 py-3.5 rounded-full font-mono font-semibold text-xs tracking-wider flex items-center gap-2 border shadow-sm active:scale-[0.98] transition-all hover:scale-[1.02]"
+                className="w-full sm:w-auto text-center px-6 py-3.5 rounded-full font-mono font-semibold text-xs tracking-wider flex items-center justify-center gap-2 border shadow-sm active:scale-[0.98] transition-all hover:scale-[1.02]"
                 style={{
                   backgroundColor: isDark ? 'rgba(13, 20, 36, 0.7)' : 'rgba(255, 255, 255, 0.8)',
                   borderColor: isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.1)',
@@ -175,58 +185,58 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPartner }) => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.75 }}
-              className="pt-6 border-t grid grid-cols-3 gap-6"
+              className="pt-6 border-t grid grid-cols-3 gap-3 sm:gap-6"
               style={{ borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)' }}
             >
               <div>
                 <div
-                  className="text-2xl sm:text-3xl font-mono font-bold flex items-center gap-1"
+                  className="text-xl sm:text-3xl font-mono font-bold flex items-center gap-1"
                   style={{ color: currentTemplate.palette.textColor }}
                 >
                   <span style={{ color: currentTemplate.palette.primary }}>0.74</span>
                   <span className="text-xs opacity-50 font-sans">Å</span>
                 </div>
-                <div className="text-xs opacity-70 leading-tight mt-1">Cryo-EM Resolution</div>
+                <div className="text-[11px] sm:text-xs opacity-70 leading-tight mt-1">Cryo-EM Resolution</div>
               </div>
 
               <div>
                 <div
-                  className="text-2xl sm:text-3xl font-mono font-bold flex items-center gap-1"
+                  className="text-xl sm:text-3xl font-mono font-bold flex items-center gap-1"
                   style={{ color: currentTemplate.palette.textColor }}
                 >
                   <span style={{ color: currentTemplate.palette.accent }}>99.98</span>
                   <span className="text-xs opacity-50 font-sans">%</span>
                 </div>
-                <div className="text-xs opacity-70 leading-tight mt-1">On-Target Specificity</div>
+                <div className="text-[11px] sm:text-xs opacity-70 leading-tight mt-1">On-Target Specificity</div>
               </div>
 
               <div>
                 <div
-                  className="text-2xl sm:text-3xl font-mono font-bold flex items-center gap-1"
+                  className="text-xl sm:text-3xl font-mono font-bold flex items-center gap-1"
                   style={{ color: currentTemplate.palette.textColor }}
                 >
                   <span style={{ color: currentTemplate.palette.primary }}>6</span>
                   <span className="text-xs opacity-50 font-sans">Assets</span>
                 </div>
-                <div className="text-xs opacity-70 leading-tight mt-1">In Active Clinical Trials</div>
+                <div className="text-[11px] sm:text-xs opacity-70 leading-tight mt-1">In Clinical Trials</div>
               </div>
             </motion.div>
           </motion.div>
 
-          {/* Right Visual Stage: Slides in from RIGHT with Parallax floating overlays */}
+          {/* Right Visual Stage: Slides in from RIGHT */}
           <motion.div
-            style={{ y: rightColY }}
+            style={{ y: isDesktop ? rightColY : 0 }}
             initial={{ opacity: 0, x: 90 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.95, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-            className="lg:col-span-6 relative"
+            className="lg:col-span-6 relative z-10 mt-2 sm:mt-4 lg:mt-0"
           >
             {/* Top Floating Badge: Slides down from TOP */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="absolute -top-3 right-6 z-20 hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-[11px] font-mono shadow-md backdrop-blur-md"
+              className="absolute -top-3 right-4 sm:right-6 z-20 hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-[11px] font-mono shadow-md backdrop-blur-md"
               style={{
                 backgroundColor: isDark ? 'rgba(13, 20, 36, 0.95)' : 'rgba(255, 255, 255, 0.95)',
                 borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.08)',
@@ -278,7 +288,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPartner }) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.9 }}
-        className="mt-12 text-center relative z-10"
+        className="mt-8 sm:mt-12 text-center relative z-10"
       >
         <a
           href="#innovation"

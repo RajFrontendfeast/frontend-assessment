@@ -1,14 +1,18 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { MapPin, ShieldCheck, Cpu, Building2, CheckCircle2, Globe2, Activity, Zap } from 'lucide-react';
 import { LAB_LOCATIONS } from '../data/biotechData';
 import { bioSound } from '../utils/sound';
 import { useDesignTemplate } from '../context/TemplateContext';
+import { centerTabInContainer } from '../utils/tabScroll';
 
 export const BioFoundrySection: React.FC = () => {
   const { currentTemplate } = useDesignTemplate();
   const isDark = currentTemplate.mode === 'dark';
   const sectionRef = useRef<HTMLDivElement>(null);
+  const mobileContainerRef = useRef<HTMLDivElement>(null);
+  const mobileTabRefs = useRef<{ [key: number]: HTMLButtonElement | null }>({});
+
   const [activeLocIdx, setActiveLocIdx] = useState<number>(0);
 
   const { scrollYProgress } = useScroll({
@@ -17,6 +21,15 @@ export const BioFoundrySection: React.FC = () => {
   });
 
   const bgFloatY = useTransform(scrollYProgress, [0, 1], [-70, 70]);
+
+  // Auto-center active location tab on mobile
+  useEffect(() => {
+    const container = mobileContainerRef.current;
+    const target = mobileTabRefs.current[activeLocIdx];
+    if (container && target) {
+      centerTabInContainer(container, target);
+    }
+  }, [activeLocIdx]);
 
   const activeLocation = LAB_LOCATIONS[activeLocIdx];
 
@@ -77,15 +90,22 @@ export const BioFoundrySection: React.FC = () => {
         </motion.div>
 
         {/* Mobile Horizontal Facility Selector Ribbon (Visible only on mobile/tablet < lg) */}
-        <div className="lg:hidden flex items-center gap-2 overflow-x-auto pb-2 mb-6 no-scrollbar max-w-full">
+        <div
+          ref={mobileContainerRef}
+          className="lg:hidden flex items-center gap-2 overflow-x-auto pb-2 mb-6 no-scrollbar max-w-full"
+        >
           {LAB_LOCATIONS.map((loc, idx) => {
             const isActive = activeLocIdx === idx;
             return (
               <button
                 key={loc.city}
+                ref={(el) => (mobileTabRefs.current[idx] = el)}
                 onClick={() => {
                   bioSound.playClick(500 + idx * 50);
                   setActiveLocIdx(idx);
+                  if (mobileContainerRef.current && mobileTabRefs.current[idx]) {
+                    centerTabInContainer(mobileContainerRef.current, mobileTabRefs.current[idx]);
+                  }
                 }}
                 className={`flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-mono whitespace-nowrap shrink-0 border transition-all ${
                   isActive
