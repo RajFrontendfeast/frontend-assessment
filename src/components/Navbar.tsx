@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Dna, Menu, X, ArrowUpRight, Cpu, Sparkles, Palette } from 'lucide-react';
+import { Dna, Menu, X, ArrowUpRight, Cpu } from 'lucide-react';
 import { useDesignTemplate } from '../context/TemplateContext';
 import { useBodyScrollLock } from '../hooks/useBodyScrollLock';
 
@@ -9,10 +9,9 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
-  const { currentTemplate, currentTemplateId, setTemplate, templates } = useDesignTemplate();
+  const { currentTemplate } = useDesignTemplate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [templateMenuOpen, setTemplateMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
 
   useBodyScrollLock(mobileMenuOpen);
@@ -72,21 +71,21 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
           : 'bg-transparent py-3 sm:py-5'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 flex items-center justify-between gap-1 sm:gap-4">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between gap-2 sm:gap-4">
         {/* Brand Logo */}
         <a
           href="#hero"
-          className="flex items-center gap-1.5 sm:gap-3 group select-none min-w-0 shrink"
+          className="flex items-center gap-2 group select-none shrink-0"
         >
           <div
-            className="relative w-7 h-7 sm:w-10 sm:h-10 rounded-xl border flex items-center justify-center overflow-hidden shadow-sm transition-colors shrink-0"
+            className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl border flex items-center justify-center overflow-hidden shadow-sm transition-colors shrink-0"
             style={{
               backgroundColor: isDark ? 'rgba(16, 185, 129, 0.12)' : 'rgba(16, 185, 129, 0.08)',
               borderColor: isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)',
             }}
           >
             <Dna
-              className="w-3.5 h-3.5 sm:w-5 sm:h-5 group-hover:rotate-45 transition-transform duration-500"
+              className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:rotate-45 transition-transform duration-500"
               style={{ color: currentTemplate.palette.primary }}
             />
             <div
@@ -94,16 +93,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
               style={{ backgroundColor: `${currentTemplate.palette.primary}20` }}
             />
           </div>
-          <div className="min-w-0">
-            <div className="flex items-center gap-1 sm:gap-1.5">
+          <div className="shrink-0">
+            <div className="flex items-center gap-1 sm:gap-1.5 whitespace-nowrap">
               <span
-                className="font-display font-bold text-xs sm:text-xl tracking-tight truncate"
+                className="font-display font-bold text-xs sm:text-base lg:text-lg tracking-tight"
                 style={{ color: currentTemplate.palette.textColor }}
               >
                 SYNTHETIX
               </span>
               <span
-                className="text-[8px] sm:text-[10px] font-mono font-bold px-1 sm:px-1.5 py-0.5 rounded border shrink-0"
+                className="text-[8px] sm:text-[9px] font-mono font-bold px-1 sm:px-1.5 py-0.5 rounded border shrink-0"
                 style={{
                   backgroundColor: `${currentTemplate.palette.primary}18`,
                   color: currentTemplate.palette.primary,
@@ -113,7 +112,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
                 BIO
               </span>
             </div>
-            <span className="text-[9px] sm:text-[10px] font-mono tracking-wider hidden sm:block opacity-60">
+            <span className="text-[8px] sm:text-[9px] font-mono tracking-wider hidden sm:block opacity-60 whitespace-nowrap">
               PROGRAMMABLE THERAPEUTICS
             </span>
           </div>
@@ -121,7 +120,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
 
         {/* Desktop Nav Links */}
         <nav
-          className="hidden md:flex items-center gap-1 p-1 rounded-full border backdrop-blur-md shadow-sm transition-colors"
+          className="hidden md:flex items-center gap-1 lg:gap-1.5 px-3 py-1.5 rounded-full border backdrop-blur-md shadow-sm transition-colors shrink-0"
           style={{
             backgroundColor: isDark ? 'rgba(13, 20, 36, 0.75)' : 'rgba(255, 255, 255, 0.8)',
             borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)',
@@ -133,21 +132,30 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
               <a
                 key={link.id}
                 href={link.href}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all ${
+                className={`relative px-2.5 lg:px-3.5 py-1.5 text-[11px] lg:text-xs font-semibold tracking-normal lg:tracking-wide whitespace-nowrap transition-colors duration-200 group flex flex-col items-center justify-center ${
                   isActive
-                    ? 'shadow-sm font-bold'
+                    ? 'font-bold'
                     : 'opacity-70 hover:opacity-100'
                 }`}
                 style={{
-                  backgroundColor: isActive
-                    ? currentTemplate.palette.primary
-                    : 'transparent',
                   color: isActive
-                    ? '#FFFFFF'
+                    ? currentTemplate.palette.primary
                     : currentTemplate.palette.textColor,
                 }}
               >
-                {link.label}
+                <span>{link.label}</span>
+
+                {/* Animated Bottom Border Line */}
+                <span
+                  className={`absolute bottom-0 left-2 right-2 h-[2px] rounded-full transition-all duration-300 ease-out origin-center pointer-events-none ${
+                    isActive
+                      ? 'opacity-100 scale-x-100'
+                      : 'opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100'
+                  }`}
+                  style={{
+                    backgroundColor: currentTemplate.palette.primary,
+                  }}
+                />
               </a>
             );
           })}
@@ -155,95 +163,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
 
         {/* Right Action Cluster */}
         <div className="flex items-center gap-1 sm:gap-3 shrink-0">
-          {/* Template Switcher Dropdown in Nav */}
-          <div className="relative">
-            <button
-              id="btn-nav-template-toggle"
-              onClick={() => {
-                setTemplateMenuOpen(!templateMenuOpen);
-              }}
-              title="Change UI Design Template"
-              className="flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-3 py-1.5 rounded-xl border text-xs font-mono font-bold transition-all shadow-sm"
-              style={{
-                backgroundColor: isDark ? '#0D1424' : '#FFFFFF',
-                borderColor: `${currentTemplate.palette.primary}40`,
-                color: currentTemplate.palette.textColor,
-              }}
-            >
-              <Palette className="w-3.5 h-3.5" style={{ color: currentTemplate.palette.primary }} />
-              <span className="hidden xl:inline text-[11px]">TEMPLATE:</span>
-              <span className="hidden sm:inline text-[11px]" style={{ color: currentTemplate.palette.primary }}>
-                {currentTemplate.name.split(' ')[0]}
-              </span>
-            </button>
-
-            <AnimatePresence>
-              {templateMenuOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                  className="absolute right-0 mt-2 w-64 sm:w-72 rounded-2xl p-3 border shadow-2xl z-50 backdrop-blur-2xl"
-                  style={{
-                    backgroundColor: isDark ? '#0D1424' : '#FFFFFF',
-                    borderColor: isDark ? '#1E293B' : '#E2E8F0',
-                    color: currentTemplate.palette.textColor,
-                  }}
-                >
-                  <div className="px-2 pb-2 mb-2 border-b text-[11px] font-mono opacity-70 flex items-center justify-between" style={{ borderColor: isDark ? '#1E293B' : '#E2E8F0' }}>
-                    <span>CHOOSE DESIGN TEMPLATE</span>
-                    <Sparkles className="w-3 h-3 text-emerald-500" />
-                  </div>
-                  <div className="space-y-1.5">
-                    {templates.map((tpl) => (
-                      <button
-                        key={tpl.id}
-                        onClick={() => {
-                          setTemplate(tpl.id);
-                          setTemplateMenuOpen(false);
-                        }}
-                        className={`w-full p-2 rounded-xl text-left text-xs font-mono flex items-center justify-between border transition-all ${
-                          tpl.id === currentTemplateId
-                            ? 'font-bold shadow-sm'
-                            : 'opacity-70 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/5'
-                        }`}
-                        style={{
-                          backgroundColor: tpl.id === currentTemplateId ? `${tpl.palette.primary}15` : 'transparent',
-                          borderColor: tpl.id === currentTemplateId ? tpl.palette.primary : 'transparent',
-                          color: currentTemplate.palette.textColor,
-                        }}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="w-3 h-3 rounded-full border shadow-sm shrink-0"
-                            style={{ backgroundColor: tpl.palette.primary, borderColor: '#FFFFFF' }}
-                          />
-                          <span className="truncate">{tpl.name}</span>
-                        </div>
-                        <span className="text-[9px] uppercase px-1.5 py-0.5 rounded opacity-60 shrink-0">
-                          {tpl.mode}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
           {/* Partner CTA */}
           <button
             id="btn-nav-partner"
             onClick={() => {
               onOpenPartner();
             }}
-            className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl text-white text-xs font-bold font-mono tracking-wider shadow-sm hover:shadow transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="hidden sm:flex items-center gap-1.5 px-3.5 lg:px-4 py-1.5 lg:py-2 rounded-full text-[11px] lg:text-xs font-semibold tracking-normal shadow-sm hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.98] shrink-0 whitespace-nowrap"
             style={{
-              backgroundColor: isDark ? currentTemplate.palette.primary : '#0F172A',
+              backgroundColor: currentTemplate.palette.primary,
               color: isDark && currentTemplate.id === 'obsidian-cyber' ? '#041B15' : '#FFFFFF',
             }}
           >
-            <span>PARTNER WITH US</span>
+            <span>Partner With Us</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </button>
 
@@ -253,7 +185,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
             onClick={() => {
               setMobileMenuOpen(!mobileMenuOpen);
             }}
-            className="md:hidden p-1.5 sm:p-2 rounded-xl border shadow-sm shrink-0"
+            className="md:hidden p-1.5 sm:p-2 rounded-full border shadow-sm shrink-0 transition-colors"
             style={{
               backgroundColor: isDark ? '#0D1424' : '#FFFFFF',
               borderColor: isDark ? '#1E293B' : '#E2E8F0',
@@ -281,48 +213,33 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
             }}
           >
             <div className="flex flex-col space-y-3">
-              {navLinks.map((link) => (
-                <a
-                  key={link.id}
-                  href={link.href}
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                  }}
-                  className="px-4 py-2.5 rounded-xl text-sm font-medium transition-colors"
-                  style={{
-                    backgroundColor: activeSection === link.id ? `${currentTemplate.palette.primary}20` : 'transparent',
-                    color: activeSection === link.id ? currentTemplate.palette.primary : currentTemplate.palette.textColor,
-                  }}
-                >
-                  {link.label}
-                </a>
-              ))}
-
-              {/* Mobile Template Selector */}
-              <div className="pt-3 border-t" style={{ borderColor: isDark ? '#1E293B' : '#E2E8F0' }}>
-                <p className="text-[11px] font-mono opacity-70 mb-2">DESIGN TEMPLATE:</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {templates.map((tpl) => (
-                    <button
-                      key={tpl.id}
-                      onClick={() => {
-                        setTemplate(tpl.id);
-                        setMobileMenuOpen(false);
-                      }}
-                      className={`p-2 rounded-xl text-left text-xs font-mono border transition-all ${
-                        tpl.id === currentTemplateId ? 'font-bold' : 'opacity-70'
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.id;
+                return (
+                  <a
+                    key={link.id}
+                    href={link.href}
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                    }}
+                    className="relative group px-4 py-2.5 rounded-xl text-sm font-medium transition-all flex items-center justify-between"
+                    style={{
+                      backgroundColor: isActive ? `${currentTemplate.palette.primary}12` : 'transparent',
+                      color: isActive ? currentTemplate.palette.primary : currentTemplate.palette.textColor,
+                    }}
+                  >
+                    <span>{link.label}</span>
+                    <span
+                      className={`h-[2px] rounded-full transition-all duration-300 origin-right ${
+                        isActive
+                          ? 'w-6 opacity-100'
+                          : 'w-0 opacity-0 group-hover:w-4 group-hover:opacity-100'
                       }`}
-                      style={{
-                        backgroundColor: tpl.id === currentTemplateId ? `${tpl.palette.primary}20` : 'transparent',
-                        borderColor: tpl.id === currentTemplateId ? tpl.palette.primary : isDark ? '#1E293B' : '#E2E8F0',
-                        color: currentTemplate.palette.textColor,
-                      }}
-                    >
-                      {tpl.name.split(' ')[0]}
-                    </button>
-                  ))}
-                </div>
-              </div>
+                      style={{ backgroundColor: currentTemplate.palette.primary }}
+                    />
+                  </a>
+                );
+              })}
 
               <div className="pt-3 border-t" style={{ borderColor: isDark ? '#1E293B' : '#E2E8F0' }}>
                 <button
@@ -330,13 +247,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenPartner }) => {
                     setMobileMenuOpen(false);
                     onOpenPartner();
                   }}
-                  className="w-full py-3 rounded-xl text-white font-mono font-bold text-xs tracking-wider flex items-center justify-center gap-2 shadow-sm"
+                  className="w-full py-3 rounded-full font-semibold text-xs tracking-normal flex items-center justify-center gap-2 shadow-sm"
                   style={{
                     backgroundColor: currentTemplate.palette.primary,
                     color: isDark && currentTemplate.id === 'obsidian-cyber' ? '#041B15' : '#FFFFFF',
                   }}
                 >
-                  <span>INITIATE PARTNERSHIP</span>
+                  <span>Partner With Us</span>
                   <ArrowUpRight className="w-4 h-4" />
                 </button>
               </div>
