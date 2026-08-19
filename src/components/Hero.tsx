@@ -260,7 +260,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenPartner }) => {
               initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
-              className="mt-3 p-3.5 rounded-2xl backdrop-blur-md border flex items-center justify-between text-xs font-mono shadow-sm"
+              className="mt-6 p-3.5 rounded-2xl backdrop-blur-md border flex items-center justify-between text-xs font-mono shadow-sm"
               style={{
                 backgroundColor: isDark ? 'rgba(13, 20, 36, 0.85)' : 'rgba(255, 255, 255, 0.85)',
                 borderColor: isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)',

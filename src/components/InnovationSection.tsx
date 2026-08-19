@@ -194,7 +194,7 @@ export const InnovationSection: React.FC = () => {
         {/* Mobile Horizontal Tab Selector Ribbon (Visible only on mobile/tablet < lg) */}
         <div
           ref={mobileTabContainerRef}
-          className="lg:hidden flex items-center gap-2 overflow-x-auto pb-2 mb-6 no-scrollbar max-w-full"
+          className="lg:hidden flex items-center gap-3 overflow-x-auto py-2 mb-6 no-scrollbar max-w-full px-1"
         >
           {pillars.map((pillar, idx) => {
             const Icon = pillar.icon;
@@ -337,7 +337,7 @@ export const InnovationSection: React.FC = () => {
                 <div className="absolute top-3 right-3 text-[9px] font-mono opacity-30">PDB_STREAM // ACTIVE</div>
 
                 {/* Main Overview */}
-                <div className="space-y-3">
+                <div className="space-y-3 mt-3 mt-md-0">
                   <div className="flex flex-wrap items-center gap-2">
                     <span
                       className="px-3 py-1 rounded-full text-xs font-mono font-bold border"

@@ -114,7 +114,7 @@ export const CapabilitiesSection: React.FC = () => {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.75, delay: 0.15 }}
-          className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 mb-8 sm:mb-10 overflow-x-auto pb-2 sm:pb-0 no-scrollbar max-w-full"
+          className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3 mb-8 sm:mb-10 overflow-x-auto py-2 px-1 sm:pb-0 no-scrollbar max-w-full"
         >
           {PLATFORM_CAPABILITIES.map((cap) => {
             const isSelected = activeCapId === cap.id;
